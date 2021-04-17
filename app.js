@@ -81,3 +81,12 @@ multiplierButtons.forEach((button) => {
     }
   });
 });
+
+const msg = {
+  cmd: 'score',
+  throw: [
+    { multiplier: 1, value: 20 },
+    { multiplier: 1, value: 20 },
+    { multiplier: 1, value: 20 },
+  ],
+};

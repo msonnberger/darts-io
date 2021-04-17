@@ -1,8 +1,9 @@
 <?php
-namespace MyApp;
+namespace RemoteDarts;
 
 use Ratchet\MessageComponentInterface;
 use Ratchet\ConnectionInterface as Conn;
+use RemoteDarts\GameRoom;
 use Ds\Set;
 
 class App implements MessageComponentInterface {
@@ -62,7 +63,7 @@ class App implements MessageComponentInterface {
     }
 
     private function broadcastRoom($roomId, $msg) {
-        $clients = $this->rooms[$roomId];
+        $clients = $this->rooms[$roomId]->getPlayers();
 
         foreach ($clients as $client) {
             $client->send(json_encode($msg));
@@ -75,27 +76,12 @@ class App implements MessageComponentInterface {
         }
     }
 
-    private function getRandomString($length) {
-        $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $randomString = '';
-
-        for ($i = 0; $i < $length; $i++) { 
-            $randomString .= $characters[rand(0, strlen($characters) - 1)];
-        }
-
-        return $randomString;
-    }
-
     private function createRoomAndJoin(Conn $client) {
-        do {
-            $roomId = $this->getRandomString(6);
-        } while (array_key_exists($roomId, $this->rooms));
+        $room = new GameRoom($client);
+        $roomId = $room->getId();
+        $this->rooms[$roomId] = $room;
+        $this->clients[$client] = $roomId;
         
-        $this->rooms[$roomId] = new Set();
-        echo "$client->resourceId created Room $roomId\n";
-
-        $this->joinRoom($client, $roomId);
-
         $successMsg = array('cmd' => 'createdRoom', 'id' => $roomId);
         $this->broadcastRoom($roomId, $successMsg);
     }
@@ -103,14 +89,13 @@ class App implements MessageComponentInterface {
     private function joinRoom(Conn $client, $roomId) {
         if (array_key_exists($roomId, $this->rooms)) {
             if ($this->clients[$client] === null) {
-                $this->rooms[$roomId]->add($client);
+                $this->rooms[$roomId]->addPlayer($client);
                 $this->clients[$client] = $roomId;
 
                 $successMsg = array('cmd' => 'joinedRoom', 'roomId' => $roomId, 'client' => $client->resourceId);
                 $this->broadcastRoom($roomId, $successMsg);
-                echo "$client->resourceId joined Room $roomId\n";
             } else {
-                $this->sendError($client, 'You are already connected to another room.');
+                $this->sendError($client, 'You are already connected to a room.');
             }
         } else {
             $this->sendError($client, 'This room does not exist.');
@@ -120,7 +105,7 @@ class App implements MessageComponentInterface {
     private function leaveRoom(Conn $client) {
         if ($this->clients[$client] !== null) {
             $roomId = $this->clients[$client];
-            $this->rooms[$roomId]->remove($client);
+            $this->rooms[$roomId]->removePlayer($client);
             $successMsg = array('cmd' => 'leftRoom', 'roomId' => $roomId, 'client' => $client->resourceId);
             $this->broadcastRoom($roomId, $successMsg);
         } else {
@@ -128,11 +113,11 @@ class App implements MessageComponentInterface {
             return;
         }
         
-        if ($this->rooms[$roomId]->isEmpty()) {
+        if (count($this->rooms[$roomId]->getPlayers()) === 0) {
             unset($this->rooms[$roomId]);
+            echo "Room $roomId deleted\n";
         }
         $this->clients[$client] = null;
-        echo "$client->resourceId left Room $roomId\n";
     }
 
     private function sendError (Conn $client, $errorMessage) {
