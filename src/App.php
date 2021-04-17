@@ -40,6 +40,9 @@ class App implements MessageComponentInterface {
             case 'msg':
                 $this->broadcast($msgObj);
                 break;
+            case 'score':
+                $from->send($msg);
+                break;
             default:
                 $this->sendError($from, 'This command does not exist.');
                 break;
@@ -89,11 +92,16 @@ class App implements MessageComponentInterface {
     private function joinRoom(Conn $client, $roomId) {
         if (array_key_exists($roomId, $this->rooms)) {
             if ($this->clients[$client] === null) {
-                $this->rooms[$roomId]->addPlayer($client);
-                $this->clients[$client] = $roomId;
+                try {
+                    $this->rooms[$roomId]->addPlayer($client);
+                    $this->clients[$client] = $roomId;
 
-                $successMsg = array('cmd' => 'joinedRoom', 'roomId' => $roomId, 'client' => $client->resourceId);
-                $this->broadcastRoom($roomId, $successMsg);
+                    $successMsg = array('cmd' => 'joinedRoom', 'roomId' => $roomId, 'client' => $client->resourceId);
+                    $this->broadcastRoom($roomId, $successMsg);
+                } catch (\Exception $e) {
+                    $this->sendError($client, $e->getMessage());
+                }
+                
             } else {
                 $this->sendError($client, 'You are already connected to a room.');
             }

@@ -21,3 +21,27 @@
 .special {
   background-color: khaki;
 }
+
+.throw {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: min(40%, 30rem);
+  margin-top: 3rem;
+}
+
+.throw .throw-list {
+  display: flex;
+  list-style: none;
+  font-size: 2rem;
+  margin: 0;
+}
+
+.throw .throw-list li {
+  margin: 1rem;
+}
+
+.buttons button {
+  height: 3rem;
+  font-size: 1rem;
+}

@@ -9,7 +9,7 @@
     <title>Remote Darts</title>
   </head>
   <body>
-    <h1>Ratchet Chat</h1>
+    <h1>Remote Darts</h1>
     <ul></ul>
     <div class="forms-container">
       <form class="msg-form" action="">
@@ -24,41 +24,102 @@
       </form>
     </div>
     <div class="button-grid">
-      <button type="button" class="score-btn number single 1">1</button>
-      <button type="button" class="score-btn number single 2">2</button>
-      <button type="button" class="score-btn number single 3">3</button>
-      <button type="button" class="score-btn number single 4">4</button>
-      <button type="button" class="score-btn number single 5">5</button>
-      <button type="button" class="score-btn number single 6">6</button>
-      <button type="button" class="score-btn number single 7">7</button>
-      <button type="button" class="score-btn number single 8">8</button>
-      <button type="button" class="score-btn number single 9">9</button>
-      <button type="button" class="score-btn number single 10">10</button>
-      <button type="button" class="score-btn number single 11">11</button>
-      <button type="button" class="score-btn number single 12">12</button>
-      <button type="button" class="score-btn number single 13">13</button>
-      <button type="button" class="score-btn number single 14">14</button>
-      <button type="button" class="score-btn number single 15">15</button>
-      <button type="button" class="score-btn number single 16">16</button>
-      <button type="button" class="score-btn number single 17">17</button>
-      <button type="button" class="score-btn number single 18">18</button>
-      <button type="button" class="score-btn number single 19">19</button>
-      <button type="button" class="score-btn number single 20">20</button>
+      <button data-value="1" data-multiplier="S" class="score-btn number">
+        1
+      </button>
+      <button data-value="2" data-multiplier="S" class="score-btn number">
+        2
+      </button>
+      <button data-value="3" data-multiplier="S" class="score-btn number">
+        3
+      </button>
+      <button data-value="4" data-multiplier="S" class="score-btn number">
+        4
+      </button>
+      <button data-value="5" data-multiplier="S" class="score-btn number">
+        5
+      </button>
+      <button data-value="6" data-multiplier="S" class="score-btn number">
+        6
+      </button>
+      <button data-value="7" data-multiplier="S" class="score-btn number">
+        7
+      </button>
+      <button data-value="8" data-multiplier="S" class="score-btn number">
+        8
+      </button>
+      <button data-value="9" data-multiplier="S" class="score-btn number">
+        9
+      </button>
+      <button data-value="10" data-multiplier="S" class="score-btn number">
+        10
+      </button>
+      <button data-value="11" data-multiplier="S" class="score-btn number">
+        11
+      </button>
+      <button data-value="12" data-multiplier="S" class="score-btn number">
+        12
+      </button>
+      <button data-value="13" data-multiplier="S" class="score-btn number">
+        13
+      </button>
+      <button data-value="14" data-multiplier="S" class="score-btn number">
+        14
+      </button>
+      <button data-value="15" data-multiplier="S" class="score-btn number">
+        15
+      </button>
+      <button data-value="16" data-multiplier="S" class="score-btn number">
+        16
+      </button>
+      <button data-value="17" data-multiplier="S" class="score-btn number">
+        17
+      </button>
+      <button data-value="18" data-multiplier="S" class="score-btn number">
+        18
+      </button>
+      <button data-value="19" data-multiplier="S" class="score-btn number">
+        19
+      </button>
+      <button data-value="20" data-multiplier="S" class="score-btn number">
+        20
+      </button>
 
-      <button type="button" class="score-btn special-number special 0">
+      <button
+        data-value="0"
+        data-multiplier="S"
+        class="score-btn special number"
+      >
         0
       </button>
-      <button type="button" class="score-btn special-number special 25">
+      <button
+        data-value="25"
+        data-multiplier="S"
+        class="score-btn special number"
+      >
         25
       </button>
-      <button type="button" class="score-btn special-number special 50">
+      <button
+        data-value="50"
+        data-multiplier="S"
+        class="score-btn special number"
+      >
         50
       </button>
-      <button type="button" class="score-btn special multiplier">D</button>
-      <button type="button" class="score-btn special multiplier">T</button>
+      <button data-multiplier="D" class="score-btn special multiplier">
+        D
+      </button>
+      <button data-multiplier="T" class="score-btn special multiplier">
+        T
+      </button>
     </div>
 
-    <ul class="turn-list"></ul>
-    <button type="button" class="back-btn">&lsaquo;</button>
+    <div class="throw">
+      <ul class="throw-list"></ul>
+      <div class="buttons">
+        <button class="back-btn">&lsaquo;</button>
+        <button class="send-score-btn">Send</button>
+      </div>
+    </div>
   </body>
 </html>

@@ -44,14 +44,23 @@ leaveRoomButton.addEventListener('click', () => {
   conn.send(JSON.stringify(msg));
 });
 
-const numberButtons = document.querySelectorAll('.number, .special-number');
+const numberButtons = document.querySelectorAll('.number');
 numberButtons.forEach((button) => {
   button.addEventListener('click', () => {
-    const turnList = document.querySelector('.turn-list');
+    const turnList = document.querySelector('.throw-list');
     if (turnList.childElementCount < 3) {
       const turnElement = document.createElement('li');
-      const text = document.createTextNode(button.textContent);
-      turnElement.appendChild(text);
+      let text = '';
+      const multi = button.dataset.multiplier;
+      const value = button.dataset.value;
+      if (multi === 'D' || multi === 'T') {
+        text = multi;
+      }
+      text += value;
+      const textNode = document.createTextNode(text);
+      turnElement.appendChild(textNode);
+      turnElement.dataset.multiplier = multi;
+      turnElement.dataset.value = value;
       turnList.appendChild(turnElement);
     }
   });
@@ -59,7 +68,7 @@ numberButtons.forEach((button) => {
 
 const backButton = document.querySelector('.back-btn');
 backButton.addEventListener('click', () => {
-  const turnList = document.querySelector('.turn-list');
+  const turnList = document.querySelector('.throw-list');
   if (turnList.childElementCount > 0) {
     turnList.removeChild(turnList.lastChild);
   }
@@ -68,25 +77,43 @@ backButton.addEventListener('click', () => {
 const multiplierButtons = document.querySelectorAll('.multiplier');
 multiplierButtons.forEach((button) => {
   button.addEventListener('click', () => {
-    const multiplier = button.textContent;
-    const numberButtons = document.querySelectorAll('.number');
-    if (numberButtons[0].textContent.includes(multiplier)) {
+    const multiplier = button.dataset.multiplier;
+    const numberButtons = document.querySelectorAll('.number:not(.special)');
+    if (numberButtons[0].dataset.multiplier === multiplier) {
       numberButtons.forEach((numberButton) => {
-        numberButton.textContent = numberButton.textContent.substring(1);
+        numberButton.textContent = numberButton.dataset.value;
+        numberButton.dataset.multiplier = 'S';
       });
     } else {
       numberButtons.forEach((numberButton) => {
-        numberButton.textContent = multiplier + numberButton.textContent;
+        numberButton.textContent = multiplier + numberButton.dataset.value;
+        numberButton.dataset.multiplier = multiplier;
       });
     }
   });
 });
 
-const msg = {
-  cmd: 'score',
-  throw: [
-    { multiplier: 1, value: 20 },
-    { multiplier: 1, value: 20 },
-    { multiplier: 1, value: 20 },
-  ],
-};
+const sendScoreButton = document.querySelector('.send-score-btn');
+sendScoreButton.addEventListener('click', () => {
+  const throwElements = document.querySelectorAll('.throw-list li');
+  if (throwElements.length === 3) {
+    const throws = [];
+    throwElements.forEach((throwElement) => {
+      let multiplier = 1;
+      if (throwElement.dataset.multiplier === 'D') {
+        multiplier = 2;
+      } else if (throwElement.dataset.multiplier === 'T') {
+        multiplier = 3;
+      }
+      const value = throwElement.dataset.value;
+      throws.push({ multiplier, value });
+    });
+
+    const msg = {
+      cmd: 'score',
+      throws,
+    };
+
+    conn.send(JSON.stringify(msg));
+  }
+});
