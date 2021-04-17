@@ -1,4 +1,4 @@
-var conn = new WebSocket('ws://192.168.178.21:9080');
+const conn = new WebSocket('ws://192.168.178.21:9080');
 
 conn.onopen = (event) => {
   console.log('Connection established!');
@@ -42,4 +42,42 @@ joinRoomButton.addEventListener('click', () => {
 leaveRoomButton.addEventListener('click', () => {
   const msg = { cmd: 'leaveRoom' };
   conn.send(JSON.stringify(msg));
+});
+
+const numberButtons = document.querySelectorAll('.number, .special-number');
+numberButtons.forEach((button) => {
+  button.addEventListener('click', () => {
+    const turnList = document.querySelector('.turn-list');
+    if (turnList.childElementCount < 3) {
+      const turnElement = document.createElement('li');
+      const text = document.createTextNode(button.textContent);
+      turnElement.appendChild(text);
+      turnList.appendChild(turnElement);
+    }
+  });
+});
+
+const backButton = document.querySelector('.back-btn');
+backButton.addEventListener('click', () => {
+  const turnList = document.querySelector('.turn-list');
+  if (turnList.childElementCount > 0) {
+    turnList.removeChild(turnList.lastChild);
+  }
+});
+
+const multiplierButtons = document.querySelectorAll('.multiplier');
+multiplierButtons.forEach((button) => {
+  button.addEventListener('click', () => {
+    const multiplier = button.textContent;
+    const numberButtons = document.querySelectorAll('.number');
+    if (numberButtons[0].textContent.includes(multiplier)) {
+      numberButtons.forEach((numberButton) => {
+        numberButton.textContent = numberButton.textContent.substring(1);
+      });
+    } else {
+      numberButtons.forEach((numberButton) => {
+        numberButton.textContent = multiplier + numberButton.textContent;
+      });
+    }
+  });
 });
