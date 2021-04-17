@@ -5,13 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script defer src="app.js"></script>
-    <title>Document</title>
-    <style>
-      .forms-container {
-        display: flex;
-        max-width: 300px;
-      }
-    </style>
+    <link rel="stylesheet" href="styles.css" />
+    <title>Remote Darts</title>
   </head>
   <body>
     <h1>Ratchet Chat</h1>
@@ -28,5 +23,42 @@
         <button id="leave-room-btn" type="button">Leave Room</button>
       </form>
     </div>
+    <div class="button-grid">
+      <button type="button" class="score-btn number single 1">1</button>
+      <button type="button" class="score-btn number single 2">2</button>
+      <button type="button" class="score-btn number single 3">3</button>
+      <button type="button" class="score-btn number single 4">4</button>
+      <button type="button" class="score-btn number single 5">5</button>
+      <button type="button" class="score-btn number single 6">6</button>
+      <button type="button" class="score-btn number single 7">7</button>
+      <button type="button" class="score-btn number single 8">8</button>
+      <button type="button" class="score-btn number single 9">9</button>
+      <button type="button" class="score-btn number single 10">10</button>
+      <button type="button" class="score-btn number single 11">11</button>
+      <button type="button" class="score-btn number single 12">12</button>
+      <button type="button" class="score-btn number single 13">13</button>
+      <button type="button" class="score-btn number single 14">14</button>
+      <button type="button" class="score-btn number single 15">15</button>
+      <button type="button" class="score-btn number single 16">16</button>
+      <button type="button" class="score-btn number single 17">17</button>
+      <button type="button" class="score-btn number single 18">18</button>
+      <button type="button" class="score-btn number single 19">19</button>
+      <button type="button" class="score-btn number single 20">20</button>
+
+      <button type="button" class="score-btn special-number special 0">
+        0
+      </button>
+      <button type="button" class="score-btn special-number special 25">
+        25
+      </button>
+      <button type="button" class="score-btn special-number special 50">
+        50
+      </button>
+      <button type="button" class="score-btn special multiplier">D</button>
+      <button type="button" class="score-btn special multiplier">T</button>
+    </div>
+
+    <ul class="turn-list"></ul>
+    <button type="button" class="back-btn">&lsaquo;</button>
   </body>
 </html>
