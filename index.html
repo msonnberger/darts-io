@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script defer src="app.js"></script>
+    <title>Document</title>
+    <style>
+      .forms-container {
+        display: flex;
+        max-width: 300px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Ratchet Chat</h1>
+    <ul></ul>
+    <div class="forms-container">
+      <form class="msg-form" action="">
+        <input id="msg-field" type="text" />
+        <button id="send-button" type="button">Senden</button>
+      </form>
+      <form class="room-form" action="">
+        <input type="text" id="room-id" />
+        <button id="join-room-btn" type="button">Join Room</button>
+        <button id="create-room-btn" type="button">Create Room</button>
+        <button id="leave-room-btn" type="button">Leave Room</button>
+      </form>
+    </div>
+  </body>
+</html>
