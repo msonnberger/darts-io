@@ -80,13 +80,17 @@ class App implements MessageComponentInterface {
     }
 
     private function createRoomAndJoin(Conn $client) {
-        $room = new GameRoom($client);
-        $roomId = $room->getId();
-        $this->rooms[$roomId] = $room;
-        $this->clients[$client] = $roomId;
+        if ($this->clients[$client] === null) {
+            $room = new GameRoom($client);
+            $roomId = $room->getId();
+            $this->rooms[$roomId] = $room;
+            $this->clients[$client] = $roomId;
         
-        $successMsg = array('cmd' => 'createdRoom', 'id' => $roomId);
-        $this->broadcastRoom($roomId, $successMsg);
+            $successMsg = array('cmd' => 'createdRoom', 'id' => $roomId);
+            $this->broadcastRoom($roomId, $successMsg);
+        } else {
+            $this->sendError($client, 'You are already connected to a room.');
+        }
     }
 
     private function joinRoom(Conn $client, $roomId) {
@@ -115,6 +119,7 @@ class App implements MessageComponentInterface {
             $roomId = $this->clients[$client];
             $this->rooms[$roomId]->removePlayer($client);
             $successMsg = array('cmd' => 'leftRoom', 'roomId' => $roomId, 'client' => $client->resourceId);
+            $client->send(json_encode($successMsg));
             $this->broadcastRoom($roomId, $successMsg);
         } else {
             $this->sendError($client, 'You are currently in no room.');

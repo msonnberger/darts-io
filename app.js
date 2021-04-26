@@ -5,23 +5,31 @@ conn.onopen = (event) => {
 };
 
 conn.onmessage = (msg) => {
-  console.log(msg.data);
+  // console.log(msg);
+  /*
   const msgObj = JSON.parse(msg.data);
   const ul = document.getElementsByTagName('ul')[0];
   const li = document.createElement('li');
   const text = document.createTextNode(msgObj.cmd);
   li.appendChild(text);
   ul.appendChild(li);
+  */
+
+  const msgData = JSON.parse(msg.data);
+  const cmd = msgData.cmd;
+
+  if (cmd === 'createdRoom') {
+    let gameDiv = document.querySelector('.game');
+    let startScreen = document.querySelector('.start-screen');
+    gameDiv.classList.add('active');
+    startScreen.classList.remove('active');
+  } else if (cmd === 'leftRoom') {
+    gameDiv = document.querySelector('.game');
+    startScreen = document.querySelector('.start-screen');
+    gameDiv.classList.remove('active');
+    startScreen.classList.add('active');
+  }
 };
-
-const sendButton = document.getElementById('send-button');
-const text = document.getElementById('msg-field');
-
-sendButton.addEventListener('click', () => {
-  const msg = { cmd: 'msg', value: text.value };
-  conn.send(JSON.stringify(msg));
-  text.value = '';
-});
 
 const joinRoomButton = document.getElementById('join-room-btn');
 const createRoomButton = document.getElementById('create-room-btn');
@@ -42,6 +50,52 @@ joinRoomButton.addEventListener('click', () => {
 leaveRoomButton.addEventListener('click', () => {
   const msg = { cmd: 'leaveRoom' };
   conn.send(JSON.stringify(msg));
+});
+
+function moveSelectors() {
+  const selectedItems = document.querySelectorAll('.selected');
+  selectedItems.forEach((selected) => {
+    const multi = Array.from(selected.parentElement.children).indexOf(selected);
+    const selector = selected.parentElement.parentElement.lastElementChild;
+    selector.style.left = `${multi * 10}rem`;
+  });
+}
+
+moveSelectors();
+
+const selectionItems = document.querySelectorAll('.selection-item');
+selectionItems.forEach((item) => {
+  item.addEventListener('click', () => {
+    item.classList.add('selected');
+    const siblings = getAllSiblings(item);
+    siblings.forEach((sibling) => {
+      sibling.classList.remove('selected');
+    });
+    moveSelectors();
+  });
+});
+
+const openSettingsBtn = document.querySelector('#open-settings-btn');
+openSettingsBtn.addEventListener('click', () => {
+  const settingsModal = document.querySelector('.settings-modal');
+  const overlay = document.querySelector('.overlay');
+  overlay.classList.add('open');
+  settingsModal.classList.add('open');
+});
+
+const cancelBtn = document.querySelector('#cancel-btn');
+cancelBtn.addEventListener('click', () => {
+  const settingsModal = document.querySelector('.settings-modal');
+  const overlay = document.querySelector('.overlay');
+  overlay.classList.remove('open');
+  settingsModal.classList.remove('open');
+});
+
+const overlay = document.querySelector('.overlay');
+overlay.addEventListener('click', () => {
+  const modal = document.querySelector('.settings-modal.open');
+  overlay.classList.remove('open');
+  modal.classList.remove('open');
 });
 
 const numberButtons = document.querySelectorAll('.number');
@@ -117,3 +171,21 @@ sendScoreButton.addEventListener('click', () => {
     conn.send(JSON.stringify(msg));
   }
 });
+
+function getAllSiblings(element) {
+  const siblings = [];
+
+  if (!element.parentNode) {
+    return siblings;
+  }
+
+  let sibling = element.parentNode.firstChild;
+
+  while (sibling) {
+    if (sibling.nodeType === 1 && sibling !== element) {
+      siblings.push(sibling);
+    }
+    sibling = sibling.nextSibling;
+  }
+  return siblings;
+}
