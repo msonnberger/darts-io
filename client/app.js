@@ -5,48 +5,56 @@ conn.onopen = (event) => {
 };
 
 conn.onmessage = (msg) => {
-  // console.log(msg);
-  /*
-  const msgObj = JSON.parse(msg.data);
-  const ul = document.getElementsByTagName('ul')[0];
-  const li = document.createElement('li');
-  const text = document.createTextNode(msgObj.cmd);
-  li.appendChild(text);
-  ul.appendChild(li);
-  */
-
   const msgData = JSON.parse(msg.data);
   const cmd = msgData.cmd;
 
   if (cmd === 'createdRoom') {
-    let gameDiv = document.querySelector('.game');
-    let startScreen = document.querySelector('.start-screen');
-    gameDiv.classList.add('active');
-    startScreen.classList.remove('active');
+    toggleGameScreen();
+  } else if (cmd === 'joinedRoom') {
+    toggleGameScreen();
   } else if (cmd === 'leftRoom') {
-    gameDiv = document.querySelector('.game');
-    startScreen = document.querySelector('.start-screen');
-    gameDiv.classList.remove('active');
-    startScreen.classList.add('active');
+    toggleGameScreen();
   }
 };
 
-const joinRoomButton = document.getElementById('join-room-btn');
-const createRoomButton = document.getElementById('create-room-btn');
-const leaveRoomButton = document.getElementById('leave-room-btn');
-const roomIdField = document.getElementById('room-id');
+function toggleGameScreen() {
+  const gameDiv = document.querySelector('.game');
+  const startScreen = document.querySelector('.start-screen');
+  const overlay = document.querySelector('.overlay');
+  const settings = document.querySelector('.settings-modal');
+  settings.classList.remove('open');
+  overlay.classList.remove('open');
+  gameDiv.classList.toggle('active');
+  startScreen.classList.toggle('active');
+}
 
+const createRoomButton = document.getElementById('create-room-btn');
 createRoomButton.addEventListener('click', () => {
-  const msg = { cmd: 'createRoom' };
+  const settings = getSettings();
+  const msg = { cmd: 'createRoom', settings };
+  console.dir(msg);
   conn.send(JSON.stringify(msg));
 });
 
+function getSettings() {
+  const points = document.querySelector('.point-item.selected').textContent;
+  const inMode = document.querySelector('.in-mode-item.selected').textContent;
+  const outMode = document.querySelector('.out-mode-item.selected').textContent;
+
+  const settings = { points, inMode, outMode };
+  return settings;
+}
+
+const joinRoomButton = document.getElementById('join-room-btn');
 joinRoomButton.addEventListener('click', () => {
-  roomId = roomIdField.value;
+  const roomIdField = document.getElementById('room-id');
+  const roomId = roomIdField.value.toUpperCase();
+  roomIdField.value = '';
   const msg = { cmd: 'joinRoom', id: roomId };
   conn.send(JSON.stringify(msg));
 });
 
+const leaveRoomButton = document.getElementById('leave-room-btn');
 leaveRoomButton.addEventListener('click', () => {
   const msg = { cmd: 'leaveRoom' };
   conn.send(JSON.stringify(msg));
