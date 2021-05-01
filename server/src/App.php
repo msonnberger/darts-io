@@ -4,7 +4,6 @@ namespace RemoteDarts;
 use Ratchet\MessageComponentInterface;
 use Ratchet\ConnectionInterface as Conn;
 use RemoteDarts\GameRoom;
-use Ds\Set;
 
 class App implements MessageComponentInterface {
     protected $clients;
