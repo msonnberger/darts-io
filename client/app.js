@@ -22,6 +22,8 @@ function toggleGameScreen() {
   const startScreen = document.querySelector('.start-screen');
   const overlay = document.querySelector('.overlay');
   const settings = document.querySelector('.settings-modal');
+  const header = document.querySelector('header');
+  header.classList.toggle('active');
   settings.classList.remove('open');
   overlay.classList.remove('open');
   gameDiv.classList.toggle('active');
@@ -54,7 +56,7 @@ joinRoomButton.addEventListener('click', () => {
   conn.send(JSON.stringify(msg));
 });
 
-const leaveRoomButton = document.getElementById('leave-room-btn');
+const leaveRoomButton = document.querySelector('#leave-room-btn');
 leaveRoomButton.addEventListener('click', () => {
   const msg = { cmd: 'leaveRoom' };
   conn.send(JSON.stringify(msg));
@@ -83,12 +85,14 @@ selectionItems.forEach((item) => {
   });
 });
 
-const openSettingsBtn = document.querySelector('#open-settings-btn');
-openSettingsBtn.addEventListener('click', () => {
-  const settingsModal = document.querySelector('.settings-modal');
-  const overlay = document.querySelector('.overlay');
-  overlay.classList.add('open');
-  settingsModal.classList.add('open');
+const openSettingsBtns = document.querySelectorAll('.open-settings-btn');
+openSettingsBtns.forEach((button) => {
+  button.addEventListener('click', () => {
+    const settingsModal = document.querySelector('.settings-modal');
+    const overlay = document.querySelector('.overlay');
+    overlay.classList.add('open');
+    settingsModal.classList.add('open');
+  });
 });
 
 const cancelBtn = document.querySelector('#cancel-btn');
@@ -128,14 +132,6 @@ numberButtons.forEach((button) => {
   });
 });
 
-const backButton = document.querySelector('.back-btn');
-backButton.addEventListener('click', () => {
-  const turnList = document.querySelector('.throw-list');
-  if (turnList.childElementCount > 0) {
-    turnList.removeChild(turnList.lastChild);
-  }
-});
-
 const multiplierButtons = document.querySelectorAll('.multiplier');
 multiplierButtons.forEach((button) => {
   button.addEventListener('click', () => {
@@ -155,7 +151,7 @@ multiplierButtons.forEach((button) => {
   });
 });
 
-const sendScoreButton = document.querySelector('.send-score-btn');
+const sendScoreButton = document.getElementById('send-score-btn');
 sendScoreButton.addEventListener('click', () => {
   const throwElements = document.querySelectorAll('.throw-list li');
   if (throwElements.length === 3) {

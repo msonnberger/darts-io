@@ -16,7 +16,16 @@
     <title>Remote Darts</title>
   </head>
   <body>
-    <img src="./img/logo.svg" alt="darts.io Logo" class="logo" />
+    <header class="game-header">
+      <button class="btn-secondary" id="statistics-btn">Statistiken</button>
+      <img src="./img/logo.svg" alt="darts.io Logo" class="logo" />
+      <div class="room-buttons">
+        <button class="btn-primary open-settings-btn">Einstellungen</button>
+        <button class="btn-secondary" id="leave-room-btn">
+          Raum verlassen
+        </button>
+      </div>
+    </header>
     <div class="start-screen active">
       <div class="room-menu">
         <div class="join-menu">
@@ -34,57 +43,53 @@
           </button>
         </div>
         <p>oder</p>
-        <button id="open-settings-btn" class="btn-primary" type="button">
+        <button class="btn-primary open-settings-btn" type="button">
           Raum erstellen
         </button>
       </div>
-
-      <div class="settings-modal">
-        <h2 class="settings-heading">Einstellungen</h2>
-
-        <div class="selection">
-          <label for="point-selection selection-label">Punkte</label>
-          <ul class="selection-list" id="point-selection">
-            <li class="selection-item point-item">301</li>
-            <li class="selection-item point-item selected">501</li>
-            <li class="selection-item point-item">701</li>
-            <li class="selection-item point-item">1001</li>
-          </ul>
-          <div class="selector"></div>
-        </div>
-
-        <div class="selection">
-          <label for="in-mode-selection selection-label">In-Modus</label>
-          <ul class="selection-list" id="in-mode-selection">
-            <li class="selection-item in-mode-item selected">Single</li>
-            <li class="selection-item in-mode-item">Double</li>
-            <li class="selection-item in-mode-item">Triple</li>
-            <li class="selection-item in-mode-item">Master</li>
-          </ul>
-          <div class="selector"></div>
-        </div>
-
-        <div class="selection">
-          <label for="out-mode-selection selection-label">Out-Modus</label>
-          <ul class="selection-list" id="out-mode-selection">
-            <li class="selection-item out-mode-item">Single</li>
-            <li class="selection-item out-mode-item selected">Double</li>
-            <li class="selection-item out-mode-item">Triple</li>
-            <li class="selection-item out-mode-item">Master</li>
-          </ul>
-          <div class="selector"></div>
-        </div>
-        <div class="settings-buttons">
-          <button id="cancel-btn" class="btn-secondary">Zurück</button>
-          <button id="create-room-btn" class="btn-primary">
-            Raum erstellen
-          </button>
-        </div>
-      </div>
     </div>
     <div class="overlay"></div>
+    <div class="settings-modal">
+      <h2 class="settings-heading">Einstellungen</h2>
+
+      <div class="selection">
+        <label for="point-selection selection-label">Punkte</label>
+        <ul class="selection-list" id="point-selection">
+          <li class="selection-item point-item">301</li>
+          <li class="selection-item point-item selected">501</li>
+          <li class="selection-item point-item">701</li>
+          <li class="selection-item point-item">1001</li>
+        </ul>
+        <div class="selector"></div>
+      </div>
+
+      <div class="selection">
+        <label for="in-mode-selection selection-label">In-Modus</label>
+        <ul class="selection-list" id="in-mode-selection">
+          <li class="selection-item in-mode-item selected">Single</li>
+          <li class="selection-item in-mode-item">Double</li>
+          <li class="selection-item in-mode-item">Triple</li>
+          <li class="selection-item in-mode-item">Master</li>
+        </ul>
+        <div class="selector"></div>
+      </div>
+
+      <div class="selection">
+        <label for="out-mode-selection selection-label">Out-Modus</label>
+        <ul class="selection-list" id="out-mode-selection">
+          <li class="selection-item out-mode-item">Single</li>
+          <li class="selection-item out-mode-item selected">Double</li>
+          <li class="selection-item out-mode-item">Triple</li>
+          <li class="selection-item out-mode-item">Master</li>
+        </ul>
+        <div class="selector"></div>
+      </div>
+      <div class="settings-buttons">
+        <button id="cancel-btn" class="btn-secondary">Abbrechen</button>
+        <button id="create-room-btn" class="btn-primary">Raum erstellen</button>
+      </div>
+    </div>
     <div class="game">
-      <button id="leave-room-btn" type="button">Leave Room</button>
       <div class="button-grid">
         <button data-value="1" data-multiplier="S" class="score-btn number">
           1
@@ -174,11 +179,79 @@
           T
         </button>
       </div>
-      <div class="throw">
-        <ul class="throw-list"></ul>
-        <div class="buttons">
-          <button class="back-btn">&lsaquo;</button>
-          <button class="send-score-btn">Send</button>
+
+      <div class="right-screen">
+        <div class="scoreboards">
+          <div class="player1 scoreboard">
+            <h2 class="player1 points">501</h2>
+            <div class="player1 avg-container stat-container">
+              <h4 class="player1 avg-label stat-label">Avg</h4>
+              <span class="player1 avg stat-value">0.0</span>
+            </div>
+            <div class="player1 highest-throws">
+              <div class="player1 180-container stat-container">
+                <h4 class="player1 180-label stat-label">180</h4>
+                <span class="player1 180 stat-value">0</span>
+              </div>
+              <div class="player1 160-container stat-container">
+                <h4 class="player1 160-label stat-label">160+</h4>
+                <span class="player1 160 stat-value">0</span>
+              </div>
+              <div class="player1 140-container stat-container">
+                <h4 class="player1 140-label stat-label">140+</h4>
+                <span class="player1 140 stat-value">0</span>
+              </div>
+              <div class="player1 120-container stat-container">
+                <h4 class="player1 120-label stat-label">120+</h4>
+                <span class="player1 120 stat-value">0</span>
+              </div>
+              <div class="player1 100-container stat-container">
+                <h4 class="player1 100-label stat-label">100+</h4>
+                <span class="player1 100 stat-value">0</span>
+              </div>
+            </div>
+          </div>
+          <div class="player2 scoreboard">
+            <div class="last-throw">D20 – 5 – T12</div>
+            <h2 class="player2 points">501</h2>
+            <div class="player2 avg-container stat-container">
+              <h4 class="player2 avg-label stat-label">Avg</h4>
+              <span class="player2 avg stat-value">0.0</span>
+            </div>
+            <div class="player2 highest-throws">
+              <div class="player2 180-container stat-container">
+                <h4 class="player2 180-label stat-label">180</h4>
+                <span class="player2 180 stat-value">0</span>
+              </div>
+              <div class="player2 160-container stat-container">
+                <h4 class="player2 160-label stat-label">160+</h4>
+                <span class="player2 160 stat-value">0</span>
+              </div>
+              <div class="player2 140-container stat-container">
+                <h4 class="player2 140-label stat-label">140+</h4>
+                <span class="player2 140 stat-value">0</span>
+              </div>
+              <div class="player2 120-container stat-container">
+                <h4 class="player2 120-label stat-label">120+</h4>
+                <span class="player2 120 stat-value">0</span>
+              </div>
+              <div class="player2 100-container stat-container">
+                <h4 class="player2 100-label stat-label">100+</h4>
+                <span class="player2 100 stat-value">0</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="throw-container">
+          <p class="throw">
+            <span class="first dart">20</span> –
+            <span class="second dart">T5</span> –
+            <span class="third dart">T18</span>
+          </p>
+          <div class="throw-buttons">
+            <button class="btn-secondary" id="edit-throw-btn">Zurück</button>
+            <button class="btn-primary" id="send-score-btn">OK</button>
+          </div>
         </div>
       </div>
     </div>
