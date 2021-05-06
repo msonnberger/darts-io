@@ -1,8 +1,8 @@
 :root {
-  --darts-green: #309f6a;
-  --darts-red: #e3292e;
-  --darts-white: #f9dfbc;
-  --darts-black: #000000;
+  --darts-green: hsl(151, 30%, 51%);
+  --darts-red: hsl(358, 72%, 59%);
+  --darts-white: hsl(34, 84%, 86%);
+  --darts-black: hsl(0, 0%, 0%);
 
   --primary: #330968;
   --light: #f4f5ff;
@@ -56,12 +56,7 @@ body {
 }
 
 .start-screen {
-  display: none;
   margin-top: -20rem;
-}
-
-.start-screen.active {
-  display: block;
 }
 
 .room-menu {
@@ -219,10 +214,6 @@ button {
 }
 
 .game {
-  display: none;
-}
-
-.game.active {
   display: flex;
   width: 100vw;
   justify-content: space-evenly;
@@ -335,6 +326,18 @@ button {
   font-size: 5rem;
   font-weight: 300;
   width: 27rem;
+}
+
+.button-grid {
+  display: none;
+}
+
+.darts-field {
+  cursor: pointer;
+}
+
+.darts-field:hover {
+  fill: var(--primary);
 }
 
 footer {

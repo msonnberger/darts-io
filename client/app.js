@@ -9,13 +9,15 @@ conn.onmessage = (msg) => {
   const cmd = msgData.cmd;
 
   if (cmd === 'createdRoom') {
-    toggleGameScreen();
+    fetchGameScreen();
   } else if (cmd === 'joinedRoom') {
     toggleGameScreen();
   } else if (cmd === 'leftRoom') {
     toggleGameScreen();
   }
 };
+
+//toggleGameScreen();
 
 function toggleGameScreen() {
   const gameDiv = document.querySelector('.game');
@@ -28,6 +30,21 @@ function toggleGameScreen() {
   overlay.classList.remove('open');
   gameDiv.classList.toggle('active');
   startScreen.classList.toggle('active');
+}
+
+function fetchGameScreen() {
+  fetch('../server/src/game-screen.php')
+    .then((res) => res.text())
+    .then((data) => {
+      const parser = new DOMParser();
+      const gameScreen = parser.parseFromString(data, 'text/html');
+      const startScreen = document.querySelector('.start-screen');
+      document.querySelector('main').appendChild(gameScreen.getRootNode().body);
+      document.querySelector('main').removeChild(startScreen);
+      closeSettings();
+      attachEventListeners();
+    })
+    .catch((err) => console.error(err));
 }
 
 const createRoomButton = document.getElementById('create-room-btn');
@@ -96,12 +113,14 @@ openSettingsBtns.forEach((button) => {
 });
 
 const cancelBtn = document.querySelector('#cancel-btn');
-cancelBtn.addEventListener('click', () => {
+cancelBtn.addEventListener('click', closeSettings);
+
+function closeSettings() {
   const settingsModal = document.querySelector('.settings-modal');
   const overlay = document.querySelector('.overlay');
   overlay.classList.remove('open');
   settingsModal.classList.remove('open');
-});
+}
 
 const overlay = document.querySelector('.overlay');
 overlay.addEventListener('click', () => {
@@ -110,71 +129,106 @@ overlay.addEventListener('click', () => {
   modal.classList.remove('open');
 });
 
-const numberButtons = document.querySelectorAll('.number');
-numberButtons.forEach((button) => {
-  button.addEventListener('click', () => {
-    const turnList = document.querySelector('.throw-list');
-    if (turnList.childElementCount < 3) {
-      const turnElement = document.createElement('li');
-      let text = '';
-      const multi = button.dataset.multiplier;
-      const value = button.dataset.value;
-      if (multi === 'D' || multi === 'T') {
-        text = multi;
+function attachEventListeners() {
+  const numberButtons = document.querySelectorAll('.number');
+  numberButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      const turnList = document.querySelector('.throw-list');
+      if (turnList.childElementCount < 3) {
+        const turnElement = document.createElement('li');
+        let text = '';
+        const multi = button.dataset.multiplier;
+        const value = button.dataset.value;
+        if (multi === 'D' || multi === 'T') {
+          text = multi;
+        }
+        text += value;
+        const textNode = document.createTextNode(text);
+        turnElement.appendChild(textNode);
+        turnElement.dataset.multiplier = multi;
+        turnElement.dataset.value = value;
+        turnList.appendChild(turnElement);
       }
-      text += value;
-      const textNode = document.createTextNode(text);
-      turnElement.appendChild(textNode);
-      turnElement.dataset.multiplier = multi;
-      turnElement.dataset.value = value;
-      turnList.appendChild(turnElement);
-    }
-  });
-});
-
-const multiplierButtons = document.querySelectorAll('.multiplier');
-multiplierButtons.forEach((button) => {
-  button.addEventListener('click', () => {
-    const multiplier = button.dataset.multiplier;
-    const numberButtons = document.querySelectorAll('.number:not(.special)');
-    if (numberButtons[0].dataset.multiplier === multiplier) {
-      numberButtons.forEach((numberButton) => {
-        numberButton.textContent = numberButton.dataset.value;
-        numberButton.dataset.multiplier = 'S';
-      });
-    } else {
-      numberButtons.forEach((numberButton) => {
-        numberButton.textContent = multiplier + numberButton.dataset.value;
-        numberButton.dataset.multiplier = multiplier;
-      });
-    }
-  });
-});
-
-const sendScoreButton = document.getElementById('send-score-btn');
-sendScoreButton.addEventListener('click', () => {
-  const throwElements = document.querySelectorAll('.throw-list li');
-  if (throwElements.length === 3) {
-    const throws = [];
-    throwElements.forEach((throwElement) => {
-      let multiplier = 1;
-      if (throwElement.dataset.multiplier === 'D') {
-        multiplier = 2;
-      } else if (throwElement.dataset.multiplier === 'T') {
-        multiplier = 3;
-      }
-      const value = throwElement.dataset.value;
-      throws.push({ multiplier, value });
     });
+  });
 
-    const msg = {
-      cmd: 'score',
-      throws,
-    };
+  const multiplierButtons = document.querySelectorAll('.multiplier');
+  multiplierButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      const multiplier = button.dataset.multiplier;
+      const numberButtons = document.querySelectorAll('.number:not(.special)');
+      if (numberButtons[0].dataset.multiplier === multiplier) {
+        numberButtons.forEach((numberButton) => {
+          numberButton.textContent = numberButton.dataset.value;
+          numberButton.dataset.multiplier = 'S';
+        });
+      } else {
+        numberButtons.forEach((numberButton) => {
+          numberButton.textContent = multiplier + numberButton.dataset.value;
+          numberButton.dataset.multiplier = multiplier;
+        });
+      }
+    });
+  });
 
-    conn.send(JSON.stringify(msg));
+  const dartsFields = document.querySelectorAll('.darts-field');
+  dartsFields.forEach((field) => {
+    field.addEventListener('click', handleDartsFieldClick);
+  });
+
+  function handleDartsFieldClick() {
+    const value = this.dataset.value;
+    const multiplier = this.dataset.multiplier;
+
+    const throwList = document.querySelector('.throw');
+    const currentThrowCount = throwList.childElementCount;
+
+    if (currentThrowCount < 3) {
+      const dash = currentThrowCount == 2 ? '' : ' – '; // no dash if last element gets added
+      const span = document.createElement('span');
+      span.dataset.value = value;
+      span.dataset.multiplier = multiplier;
+
+      let multiplierText = '';
+      if (multiplier == 2) {
+        multiplierText = 'D';
+      } else if (multiplier == 3) {
+        multiplierText = 'T';
+      }
+
+      span.textContent = multiplierText + value + dash;
+      throwList.appendChild(span);
+    }
   }
-});
+
+  const editThrowButton = document.querySelector('#edit-throw-btn');
+  editThrowButton.addEventListener('click', () => {
+    const throwList = document.querySelector('.throw');
+    if (throwList.childElementCount > 0) {
+      throwList.removeChild(throwList.lastElementChild);
+    }
+  });
+
+  const sendScoreButton = document.getElementById('send-score-btn');
+  sendScoreButton.addEventListener('click', () => {
+    const throwElements = document.querySelectorAll('.throw span');
+    if (throwElements.length === 3) {
+      const throws = [];
+      throwElements.forEach((throwElement) => {
+        const multiplier = throwElement.dataset.multiplier;
+        const value = throwElement.dataset.value;
+        throws.push({ multiplier, value });
+      });
+
+      const msg = {
+        cmd: 'throw',
+        throws,
+      };
+
+      conn.send(JSON.stringify(msg));
+    }
+  });
+}
 
 function getAllSiblings(element) {
   const siblings = [];

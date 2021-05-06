@@ -39,7 +39,7 @@ class App implements MessageComponentInterface {
             case 'msg':
                 $this->broadcast($msgObj);
                 break;
-            case 'score':
+            case 'throw':
                 $from->send($msg);
                 break;
             default:

@@ -17,7 +17,6 @@
   </head>
   <body>
     <header class="game-header">
-      <button class="btn-secondary" id="statistics-btn">Statistiken</button>
       <img src="./img/logo.svg" alt="darts.io Logo" class="logo" />
       <div class="room-buttons">
         <button class="btn-primary open-settings-btn">Einstellungen</button>
@@ -26,236 +25,73 @@
         </button>
       </div>
     </header>
-    <div class="start-screen active">
-      <div class="room-menu">
-        <div class="join-menu">
-          <div class="room-id-field">
-            <label class="room-id-label" for="room-id">Raum ID</label>
-            <input
-              type="text"
-              id="room-id"
-              maxlength="6"
-              placeholder="ABCXYZ"
-            />
+    <main>
+      <div class="start-screen">
+        <div class="room-menu">
+          <div class="join-menu">
+            <div class="room-id-field">
+              <label class="room-id-label" for="room-id">Raum ID</label>
+              <input
+                type="text"
+                id="room-id"
+                maxlength="6"
+                placeholder="ABCXYZ"
+              />
+            </div>
+            <button id="join-room-btn" class="btn-primary" type="button">
+              Raum beitreten
+            </button>
           </div>
-          <button id="join-room-btn" class="btn-primary" type="button">
-            Raum beitreten
+          <p>oder</p>
+          <button class="btn-primary open-settings-btn" type="button">
+            Raum erstellen
           </button>
         </div>
-        <p>oder</p>
-        <button class="btn-primary open-settings-btn" type="button">
-          Raum erstellen
-        </button>
       </div>
-    </div>
-    <div class="overlay"></div>
-    <div class="settings-modal">
-      <h2 class="settings-heading">Einstellungen</h2>
+      <div class="overlay"></div>
+      <div class="settings-modal">
+        <h2 class="settings-heading">Einstellungen</h2>
 
-      <div class="selection">
-        <label for="point-selection selection-label">Punkte</label>
-        <ul class="selection-list" id="point-selection">
-          <li class="selection-item point-item">301</li>
-          <li class="selection-item point-item selected">501</li>
-          <li class="selection-item point-item">701</li>
-          <li class="selection-item point-item">1001</li>
-        </ul>
-        <div class="selector"></div>
-      </div>
-
-      <div class="selection">
-        <label for="in-mode-selection selection-label">In-Modus</label>
-        <ul class="selection-list" id="in-mode-selection">
-          <li class="selection-item in-mode-item selected">Single</li>
-          <li class="selection-item in-mode-item">Double</li>
-          <li class="selection-item in-mode-item">Triple</li>
-          <li class="selection-item in-mode-item">Master</li>
-        </ul>
-        <div class="selector"></div>
-      </div>
-
-      <div class="selection">
-        <label for="out-mode-selection selection-label">Out-Modus</label>
-        <ul class="selection-list" id="out-mode-selection">
-          <li class="selection-item out-mode-item">Single</li>
-          <li class="selection-item out-mode-item selected">Double</li>
-          <li class="selection-item out-mode-item">Triple</li>
-          <li class="selection-item out-mode-item">Master</li>
-        </ul>
-        <div class="selector"></div>
-      </div>
-      <div class="settings-buttons">
-        <button id="cancel-btn" class="btn-secondary">Abbrechen</button>
-        <button id="create-room-btn" class="btn-primary">Raum erstellen</button>
-      </div>
-    </div>
-    <div class="game">
-      <div class="button-grid">
-        <button data-value="1" data-multiplier="S" class="score-btn number">
-          1
-        </button>
-        <button data-value="2" data-multiplier="S" class="score-btn number">
-          2
-        </button>
-        <button data-value="3" data-multiplier="S" class="score-btn number">
-          3
-        </button>
-        <button data-value="4" data-multiplier="S" class="score-btn number">
-          4
-        </button>
-        <button data-value="5" data-multiplier="S" class="score-btn number">
-          5
-        </button>
-        <button data-value="6" data-multiplier="S" class="score-btn number">
-          6
-        </button>
-        <button data-value="7" data-multiplier="S" class="score-btn number">
-          7
-        </button>
-        <button data-value="8" data-multiplier="S" class="score-btn number">
-          8
-        </button>
-        <button data-value="9" data-multiplier="S" class="score-btn number">
-          9
-        </button>
-        <button data-value="10" data-multiplier="S" class="score-btn number">
-          10
-        </button>
-        <button data-value="11" data-multiplier="S" class="score-btn number">
-          11
-        </button>
-        <button data-value="12" data-multiplier="S" class="score-btn number">
-          12
-        </button>
-        <button data-value="13" data-multiplier="S" class="score-btn number">
-          13
-        </button>
-        <button data-value="14" data-multiplier="S" class="score-btn number">
-          14
-        </button>
-        <button data-value="15" data-multiplier="S" class="score-btn number">
-          15
-        </button>
-        <button data-value="16" data-multiplier="S" class="score-btn number">
-          16
-        </button>
-        <button data-value="17" data-multiplier="S" class="score-btn number">
-          17
-        </button>
-        <button data-value="18" data-multiplier="S" class="score-btn number">
-          18
-        </button>
-        <button data-value="19" data-multiplier="S" class="score-btn number">
-          19
-        </button>
-        <button data-value="20" data-multiplier="S" class="score-btn number">
-          20
-        </button>
-        <button
-          data-value="0"
-          data-multiplier="S"
-          class="score-btn special number"
-        >
-          0
-        </button>
-        <button
-          data-value="25"
-          data-multiplier="S"
-          class="score-btn special number"
-        >
-          25
-        </button>
-        <button
-          data-value="50"
-          data-multiplier="S"
-          class="score-btn special number"
-        >
-          50
-        </button>
-        <button data-multiplier="D" class="score-btn special multiplier">
-          D
-        </button>
-        <button data-multiplier="T" class="score-btn special multiplier">
-          T
-        </button>
-      </div>
-
-      <div class="right-screen">
-        <div class="scoreboards">
-          <div class="player1 scoreboard">
-            <h2 class="player1 points">501</h2>
-            <div class="player1 avg-container stat-container">
-              <h4 class="player1 avg-label stat-label">Avg</h4>
-              <span class="player1 avg stat-value">0.0</span>
-            </div>
-            <div class="player1 highest-throws">
-              <div class="player1 180-container stat-container">
-                <h4 class="player1 180-label stat-label">180</h4>
-                <span class="player1 180 stat-value">0</span>
-              </div>
-              <div class="player1 160-container stat-container">
-                <h4 class="player1 160-label stat-label">160+</h4>
-                <span class="player1 160 stat-value">0</span>
-              </div>
-              <div class="player1 140-container stat-container">
-                <h4 class="player1 140-label stat-label">140+</h4>
-                <span class="player1 140 stat-value">0</span>
-              </div>
-              <div class="player1 120-container stat-container">
-                <h4 class="player1 120-label stat-label">120+</h4>
-                <span class="player1 120 stat-value">0</span>
-              </div>
-              <div class="player1 100-container stat-container">
-                <h4 class="player1 100-label stat-label">100+</h4>
-                <span class="player1 100 stat-value">0</span>
-              </div>
-            </div>
-          </div>
-          <div class="player2 scoreboard">
-            <div class="last-throw">D20 – 5 – T12</div>
-            <h2 class="player2 points">501</h2>
-            <div class="player2 avg-container stat-container">
-              <h4 class="player2 avg-label stat-label">Avg</h4>
-              <span class="player2 avg stat-value">0.0</span>
-            </div>
-            <div class="player2 highest-throws">
-              <div class="player2 180-container stat-container">
-                <h4 class="player2 180-label stat-label">180</h4>
-                <span class="player2 180 stat-value">0</span>
-              </div>
-              <div class="player2 160-container stat-container">
-                <h4 class="player2 160-label stat-label">160+</h4>
-                <span class="player2 160 stat-value">0</span>
-              </div>
-              <div class="player2 140-container stat-container">
-                <h4 class="player2 140-label stat-label">140+</h4>
-                <span class="player2 140 stat-value">0</span>
-              </div>
-              <div class="player2 120-container stat-container">
-                <h4 class="player2 120-label stat-label">120+</h4>
-                <span class="player2 120 stat-value">0</span>
-              </div>
-              <div class="player2 100-container stat-container">
-                <h4 class="player2 100-label stat-label">100+</h4>
-                <span class="player2 100 stat-value">0</span>
-              </div>
-            </div>
-          </div>
+        <div class="selection">
+          <label for="point-selection selection-label">Punkte</label>
+          <ul class="selection-list" id="point-selection">
+            <li class="selection-item point-item">301</li>
+            <li class="selection-item point-item selected">501</li>
+            <li class="selection-item point-item">701</li>
+            <li class="selection-item point-item">1001</li>
+          </ul>
+          <div class="selector"></div>
         </div>
-        <div class="throw-container">
-          <p class="throw">
-            <span class="first dart">20</span> –
-            <span class="second dart">T5</span> –
-            <span class="third dart">T18</span>
-          </p>
-          <div class="throw-buttons">
-            <button class="btn-secondary" id="edit-throw-btn">Zurück</button>
-            <button class="btn-primary" id="send-score-btn">OK</button>
-          </div>
+
+        <div class="selection">
+          <label for="in-mode-selection selection-label">In-Modus</label>
+          <ul class="selection-list" id="in-mode-selection">
+            <li class="selection-item in-mode-item selected">Single</li>
+            <li class="selection-item in-mode-item">Double</li>
+            <li class="selection-item in-mode-item">Triple</li>
+            <li class="selection-item in-mode-item">Master</li>
+          </ul>
+          <div class="selector"></div>
+        </div>
+
+        <div class="selection">
+          <label for="out-mode-selection selection-label">Out-Modus</label>
+          <ul class="selection-list" id="out-mode-selection">
+            <li class="selection-item out-mode-item">Single</li>
+            <li class="selection-item out-mode-item selected">Double</li>
+            <li class="selection-item out-mode-item">Triple</li>
+            <li class="selection-item out-mode-item">Master</li>
+          </ul>
+          <div class="selector"></div>
+        </div>
+        <div class="settings-buttons">
+          <button id="cancel-btn" class="btn-secondary">Abbrechen</button>
+          <button id="create-room-btn" class="btn-primary">
+            Raum erstellen
+          </button>
         </div>
       </div>
-    </div>
-
+    </main>
     <footer>
       <p class="footer-text">Martin Sonnberger 2021</p>
       <a href="imprint" class="footer-link">Impressum</a>
