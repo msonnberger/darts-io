@@ -16,9 +16,17 @@ h2 {
   margin-bottom: 0;
 }
 
+.license-heading {
+  margin-top: 5rem;
+  margin-bottom: 1rem;
+}
+
 .license-text {
   font-family: 'Source Code Pro', monospace;
+}
+
+.license-paragraph {
   text-align: left;
-  max-width: 60rem;
   font-size: 1.8rem;
+  max-width: 60rem;
 }
