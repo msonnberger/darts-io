@@ -106,7 +106,7 @@ class GameRoom {
         
         foreach ($throws as $throw) {
             $multi = $throw->multiplier;
-            $value = $thorw->value;
+            $value = $throw->value;
 
             if (!is_int($multi) or $multi < 1 or $multi > 3) {
                 return -1;
