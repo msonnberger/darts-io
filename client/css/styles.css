@@ -100,8 +100,18 @@ button {
   padding: 0 0.5em;
   border-style: solid;
   cursor: pointer;
-  box-shadow: 0px 8px 15px var(--dark-transparent);
+  box-shadow: 0px 3px 6px var(--dark-transparent);
   margin: 0.3rem;
+  transition: transform 100ms ease-in-out;
+}
+
+button:hover {
+  transform: translateY(-0.2rem);
+}
+
+button:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 2px var(--dark-transparent);
 }
 
 .btn-primary {
