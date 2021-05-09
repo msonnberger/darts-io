@@ -36,11 +36,9 @@ class App implements MessageComponentInterface {
             case 'leaveRoom':
                 $this->leaveRoom($from);
                 break;
-            case 'msg':
-                $this->broadcast($msgObj);
-                break;
             case 'throw':
-                $from->send($msg);
+                $this->addThrow($from, $msgObj->throws);
+                $this->sendScores($from);
                 break;
             default:
                 $this->sendError($from, 'This command does not exist.');
@@ -100,7 +98,7 @@ class App implements MessageComponentInterface {
                     $this->clients[$client] = $roomId;
 
                     $successMsg = array('cmd' => 'joinedRoom', 'roomId' => $roomId, 'client' => $client->resourceId);
-                    $this->broadcastRoom($roomId, $successMsg);
+                    $client->send(json_encode($successMsg));
                 } catch (\Exception $e) {
                     $this->sendError($client, $e->getMessage());
                 }
@@ -130,6 +128,23 @@ class App implements MessageComponentInterface {
             echo "Room $roomId deleted\n";
         }
         $this->clients[$client] = null;
+    }
+
+    private function addThrow(Conn $client, $throw) {
+        $room = $this->getClientRoom($client);
+        $room->newScore($client, $throw);
+    }
+
+    private function sendScores(Conn $client) {
+        $roomId = $this->clients[$client];
+        $room = $this->getClientRoom($client);
+        $scores = $room->getScores();
+        $msg = array('cmd' => 'scores', 'scores' => $scores);
+        $this->broadcastRoom($roomId, $msg);
+    }
+
+    private function getClientRoom(Conn $client) {
+        return $this->rooms[$this->clients[$client]];
     }
 
     private function sendError (Conn $client, $errorMessage) {

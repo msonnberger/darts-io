@@ -332,10 +332,11 @@ button:active {
 
 .throw {
   margin: 0;
-  margin-right: 3rem;
-  font-size: 5rem;
+  margin-right: 1.6rem;
+  font-size: 4.5rem;
   font-weight: 300;
-  width: 27rem;
+  width: 28rem;
+  text-align: center;
 }
 
 .button-grid {

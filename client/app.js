@@ -11,13 +11,13 @@ conn.onmessage = (msg) => {
   if (cmd === 'createdRoom') {
     fetchGameScreen();
   } else if (cmd === 'joinedRoom') {
-    toggleGameScreen();
+    fetchGameScreen();
   } else if (cmd === 'leftRoom') {
     toggleGameScreen();
+  } else if (cmd === 'scores') {
+    updateScores(msgData.scores);
   }
 };
-
-//toggleGameScreen();
 
 function toggleGameScreen() {
   const gameDiv = document.querySelector('.game');
@@ -39,7 +39,9 @@ function fetchGameScreen() {
       const parser = new DOMParser();
       const gameScreen = parser.parseFromString(data, 'text/html');
       const startScreen = document.querySelector('.start-screen');
-      document.querySelector('main').appendChild(gameScreen.getRootNode().body);
+      document
+        .querySelector('main')
+        .appendChild(gameScreen.getRootNode().body.firstChild);
       document.querySelector('main').removeChild(startScreen);
       closeSettings();
       attachEventListeners();
@@ -51,7 +53,7 @@ const createRoomButton = document.getElementById('create-room-btn');
 createRoomButton.addEventListener('click', () => {
   const settings = getSettings();
   const msg = { cmd: 'createRoom', settings };
-  console.dir(msg);
+
   conn.send(JSON.stringify(msg));
 });
 
@@ -228,6 +230,12 @@ function attachEventListeners() {
       conn.send(JSON.stringify(msg));
     }
   });
+}
+
+function updateScores(scores) {
+  const points = document.querySelectorAll('.points');
+  points[0].textContent = scores[0];
+  points[1].textContent = scores[1];
 }
 
 function getAllSiblings(element) {

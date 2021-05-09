@@ -3,161 +3,161 @@
     <div class="button-grid">
       <button
         data-value="1"
-        data-multiplier="S"
+        data-multiplier="1"
         class="score-btn number darts-field"
       >
         1
       </button>
       <button
         data-value="2"
-        data-multiplier="S"
+        data-multiplier="1"
         class="score-btn number darts-field"
       >
         2
       </button>
       <button
         data-value="3"
-        data-multiplier="S"
+        data-multiplier="1"
         class="score-btn number darts-field"
       >
         3
       </button>
       <button
         data-value="4"
-        data-multiplier="S"
+        data-multiplier="1"
         class="score-btn number darts-field"
       >
         4
       </button>
       <button
         data-value="5"
-        data-multiplier="S"
+        data-multiplier="1"
         class="score-btn number darts-field"
       >
         5
       </button>
       <button
         data-value="6"
-        data-multiplier="S"
+        data-multiplier="1"
         class="score-btn number darts-field"
       >
         6
       </button>
       <button
         data-value="7"
-        data-multiplier="S"
+        data-multiplier="1"
         class="score-btn number darts-field"
       >
         7
       </button>
       <button
         data-value="8"
-        data-multiplier="S"
+        data-multiplier="1"
         class="score-btn number darts-field"
       >
         8
       </button>
       <button
         data-value="9"
-        data-multiplier="S"
+        data-multiplier="1"
         class="score-btn number darts-field"
       >
         9
       </button>
       <button
         data-value="10"
-        data-multiplier="S"
+        data-multiplier="1"
         class="score-btn number darts-field"
       >
         10
       </button>
       <button
         data-value="11"
-        data-multiplier="S"
+        data-multiplier="1"
         class="score-btn number darts-field"
       >
         11
       </button>
       <button
         data-value="12"
-        data-multiplier="S"
+        data-multiplier="1"
         class="score-btn number darts-field"
       >
         12
       </button>
       <button
         data-value="13"
-        data-multiplier="S"
+        data-multiplier="1"
         class="score-btn number darts-field"
       >
         13
       </button>
       <button
         data-value="14"
-        data-multiplier="S"
+        data-multiplier="1"
         class="score-btn number darts-field"
       >
         14
       </button>
       <button
         data-value="15"
-        data-multiplier="S"
+        data-multiplier="1"
         class="score-btn number darts-field"
       >
         15
       </button>
       <button
         data-value="16"
-        data-multiplier="S"
+        data-multiplier="1"
         class="score-btn number darts-field"
       >
         16
       </button>
       <button
         data-value="17"
-        data-multiplier="S"
+        data-multiplier="1"
         class="score-btn number darts-field"
       >
         17
       </button>
       <button
         data-value="18"
-        data-multiplier="S"
+        data-multiplier="1"
         class="score-btn number darts-field"
       >
         18
       </button>
       <button
         data-value="19"
-        data-multiplier="S"
+        data-multiplier="1"
         class="score-btn number darts-field"
       >
         19
       </button>
       <button
         data-value="20"
-        data-multiplier="S"
+        data-multiplier="1"
         class="score-btn number darts-field"
       >
         20
       </button>
       <button
         data-value="0"
-        data-multiplier="S"
+        data-multiplier="1"
         class="score-btn special number darts-field"
       >
         0
       </button>
       <button
         data-value="25"
-        data-multiplier="S"
+        data-multiplier="1"
         class="score-btn special number darts-field"
       >
         25
       </button>
       <button
         data-value="50"
-        data-multiplier="S"
+        data-multiplier="1"
         class="score-btn special number darts-field"
       >
         50
@@ -305,7 +305,9 @@
         fill="black"
       />
       <path
-        class="darts-field black single 7"
+        class="darts-field black"
+        data-value="7"
+        data-multiplier="1"
         fill-rule="evenodd"
         clip-rule="evenodd"
         d="M140.094 459.914C156.873 476.696 176.194 490.729 197.336 501.503L300.01 300L140.094 459.914Z"
