@@ -941,5 +941,5 @@
     </div>
   </div>
 
-  <p class="room-id-paragraph">Room <span class="room-id">ABCXYZ</span></p>
+  <p class="room-id-paragraph">Raum <span class="room-id">ABCXYZ</span></p>
 </div>
