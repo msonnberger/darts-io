@@ -117,7 +117,6 @@ class App implements MessageComponentInterface {
             $this->rooms[$roomId]->removePlayer($client);
             $successMsg = array('cmd' => 'leftRoom', 'roomId' => $roomId, 'client' => $client->resourceId);
             $client->send(json_encode($successMsg));
-            $this->broadcastRoom($roomId, $successMsg);
         } else {
             $this->sendError($client, 'You are currently in no room.');
             return;

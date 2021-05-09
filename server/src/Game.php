@@ -36,7 +36,7 @@ class Game {
                 throw new \Exception('Wrong player.');
             }
         } else {
-            if ($this->rounds[1] !== $this->rounds[0] + 1) {
+            if ($this->rounds[1] !== $this->rounds[0] - 1) {
                 throw new \Exception('Wrong player.');
             }
         }

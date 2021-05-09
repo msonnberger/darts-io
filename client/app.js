@@ -1,4 +1,5 @@
 const conn = new WebSocket('ws://192.168.178.21:9080');
+let roomId;
 
 conn.onopen = (event) => {
   console.log('Connection established!');
@@ -10,26 +11,30 @@ conn.onmessage = (msg) => {
 
   if (cmd === 'createdRoom') {
     fetchGameScreen();
+    roomId = msgData.id;
   } else if (cmd === 'joinedRoom') {
     fetchGameScreen();
+    roomId = msgData.roomId;
   } else if (cmd === 'leftRoom') {
-    toggleGameScreen();
+    removeGameScreen();
   } else if (cmd === 'scores') {
     updateScores(msgData.scores);
   }
 };
 
-function toggleGameScreen() {
-  const gameDiv = document.querySelector('.game');
+function removeGameScreen() {
   const startScreen = document.querySelector('.start-screen');
   const overlay = document.querySelector('.overlay');
   const settings = document.querySelector('.settings-modal');
   const header = document.querySelector('header');
-  header.classList.toggle('active');
+
+  header.classList.remove('active');
   settings.classList.remove('open');
   overlay.classList.remove('open');
-  gameDiv.classList.toggle('active');
-  startScreen.classList.toggle('active');
+  startScreen.classList.add('active');
+
+  const game = document.querySelector('.game-wrapper');
+  document.querySelector('main').removeChild(game);
 }
 
 function fetchGameScreen() {
@@ -42,9 +47,11 @@ function fetchGameScreen() {
       document
         .querySelector('main')
         .appendChild(gameScreen.getRootNode().body.firstChild);
-      document.querySelector('main').removeChild(startScreen);
+      startScreen.classList.remove('active');
       closeSettings();
       attachEventListeners();
+      document.querySelector('.game-header').classList.add('active');
+      updateRoomId(roomId);
     })
     .catch((err) => console.error(err));
 }
@@ -236,6 +243,11 @@ function updateScores(scores) {
   const points = document.querySelectorAll('.points');
   points[0].textContent = scores[0];
   points[1].textContent = scores[1];
+}
+
+function updateRoomId(roomId) {
+  const roomIdSpan = document.querySelector('.room-id');
+  roomIdSpan.textContent = roomId;
 }
 
 function getAllSiblings(element) {
