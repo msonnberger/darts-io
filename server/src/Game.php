@@ -82,6 +82,8 @@ class Game {
 
         $this->scores[$playerIndex] = $currScore - $score;
         $this->rounds[$playerIndex]++;
+
+        return $this->scores[$playerIndex];
     }
 
     private function calcScore($throws) {

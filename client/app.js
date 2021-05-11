@@ -11,14 +11,16 @@ conn.onmessage = (msg) => {
 
   if (cmd === 'createdRoom') {
     fetchGameScreen();
-    roomId = msgData.id;
+    roomId = msgData.content.id;
   } else if (cmd === 'joinedRoom') {
     fetchGameScreen();
-    roomId = msgData.roomId;
+    roomId = msgData.content.roomId;
   } else if (cmd === 'leftRoom') {
     removeGameScreen();
-  } else if (cmd === 'scores') {
-    updateScores(msgData.scores);
+  } else if (cmd === 'ownScore') {
+    updateScore(msgData.content.score, true);
+  } else if (cmd === 'otherScore') {
+    updateScore(msgData.content.score, false);
   }
 };
 
@@ -239,10 +241,14 @@ function attachEventListeners() {
   });
 }
 
-function updateScores(scores) {
+function updateScore(score, ownScore) {
   const points = document.querySelectorAll('.points');
-  points[0].textContent = scores[0];
-  points[1].textContent = scores[1];
+
+  if (ownScore) {
+    points[0].textContent = score;
+  } else {
+    points[1].textContent = score;
+  }
 }
 
 function updateRoomId(roomId) {

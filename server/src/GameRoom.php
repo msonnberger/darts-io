@@ -58,7 +58,7 @@ class GameRoom {
 
     public function newScore(Conn $player, $throws) {
         $playerIndex = array_search($player, $this->players);
-        $this->game->newScore($playerIndex, $throws);
+        return $this->game->newScore($playerIndex, $throws);
     }
 
     public function changeSettings($pointMode, $outMode, $inMode) {

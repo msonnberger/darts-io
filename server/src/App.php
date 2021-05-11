@@ -38,7 +38,6 @@ class App implements MessageComponentInterface {
                 break;
             case 'throw':
                 $this->addThrow($from, $msgObj->throws);
-                $this->sendScores($from);
                 break;
             default:
                 $this->sendError($from, 'This command does not exist.');
@@ -66,13 +65,18 @@ class App implements MessageComponentInterface {
         $clients = $this->rooms[$roomId]->getPlayers();
 
         foreach ($clients as $client) {
-            $client->send(json_encode($msg));
+            $client->send($msg);
         }
     }
 
-    private function broadcast($msg) {
-        foreach ($this->clients as $client) {
-            $client->send(json_encode($msg));
+    private function broadcastRoomExceptFrom(Conn $from, $msg) {
+        $roomId = $this->clients[$from];
+        $clients = $this->rooms[$roomId]->getPlayers();
+
+        foreach ($clients as $client) {
+            if ($client->resourceId !== $from->resourceId) {
+                $client->send($msg);
+            }
         }
     }
 
@@ -82,9 +86,8 @@ class App implements MessageComponentInterface {
             $roomId = $room->getId();
             $this->rooms[$roomId] = $room;
             $this->clients[$client] = $roomId;
-        
-            $successMsg = array('cmd' => 'createdRoom', 'id' => $roomId);
-            $this->broadcastRoom($roomId, $successMsg);
+            $msgContent = array('id' => $roomId);
+            $this->broadcastRoom($roomId, $this->createMessageString('createdRoom', $msgContent));
         } else {
             $this->sendError($client, 'You are already connected to a room.');
         }
@@ -97,8 +100,8 @@ class App implements MessageComponentInterface {
                     $this->rooms[$roomId]->addPlayer($client);
                     $this->clients[$client] = $roomId;
 
-                    $successMsg = array('cmd' => 'joinedRoom', 'roomId' => $roomId, 'client' => $client->resourceId);
-                    $client->send(json_encode($successMsg));
+                    $msgContent = array('roomId' => $roomId);
+                    $client->send($this->createMessageString('joinedRoom', $msgContent));
                 } catch (\Exception $e) {
                     $this->sendError($client, $e->getMessage());
                 }
@@ -115,8 +118,8 @@ class App implements MessageComponentInterface {
         if ($this->clients[$client] !== null) {
             $roomId = $this->clients[$client];
             $this->rooms[$roomId]->removePlayer($client);
-            $successMsg = array('cmd' => 'leftRoom', 'roomId' => $roomId, 'client' => $client->resourceId);
-            $client->send(json_encode($successMsg));
+            $msgContent = array('roomId' => $roomId);
+            $client->send($this->createMessageString('leftRoom', $msgContent));
         } else {
             $this->sendError($client, 'You are currently in no room.');
             return;
@@ -131,25 +134,34 @@ class App implements MessageComponentInterface {
 
     private function addThrow(Conn $client, $throw) {
         $room = $this->getClientRoom($client);
-        $room->newScore($client, $throw);
+        $score = $room->newScore($client, $throw);
+
+        $msgContent = array('score' => $score);
+        $client->send($this->createMessageString('ownScore', $msgContent));
+        $this->broadcastRoomExceptFrom($client, $this->createMessageString('otherScore', $msgContent));
     }
 
     private function sendScores(Conn $client) {
         $roomId = $this->clients[$client];
         $room = $this->getClientRoom($client);
         $scores = $room->getScores();
-        $msg = array('cmd' => 'scores', 'scores' => $scores);
-        $this->broadcastRoom($roomId, $msg);
+        $msgContent = array('scores' => $scores);
+        $this->broadcastRoom($roomId, $this->createMessageString('scores', $msgContent));
     }
 
     private function getClientRoom(Conn $client) {
         return $this->rooms[$this->clients[$client]];
     }
 
-    private function sendError (Conn $client, $errorMessage) {
+    private function sendError(Conn $client, $errorMessage) {
         $error = array('cmd' => 'error', 'errorMessage' => $errorMessage);
         $client->send(json_encode($error));
         echo "ERROR: $errorMessage\n";
+    }
+
+    private function createMessageString($messageCommand, $content) {
+        $msg = array('cmd' => $messageCommand, 'content' => $content);
+        return json_encode($msg);
     }
 }
 
