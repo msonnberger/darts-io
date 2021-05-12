@@ -67,11 +67,11 @@ createRoomButton.addEventListener('click', () => {
 });
 
 function getSettings() {
-  const points = document.querySelector('.point-item.selected').textContent;
+  const pointMode = document.querySelector('.point-item.selected').textContent;
   const inMode = document.querySelector('.in-mode-item.selected').textContent;
   const outMode = document.querySelector('.out-mode-item.selected').textContent;
 
-  const settings = { points, inMode, outMode };
+  const settings = { pointMode, inMode, outMode };
   return settings;
 }
 
@@ -131,6 +131,14 @@ function closeSettings() {
   const overlay = document.querySelector('.overlay');
   overlay.classList.remove('open');
   settingsModal.classList.remove('open');
+}
+
+function closeModals() {
+  const modals = document.querySelectorAll('.modal');
+  modals.forEach((modal) => {
+    modal.classList.remove('open');
+  });
+  document.querySelector('.overlay').classList.remove('open');
 }
 
 const overlay = document.querySelector('.overlay');
@@ -259,10 +267,15 @@ function updateScoreboard(newScoreboard, ownScoreboard) {
     lastThrowString += `${throwElement.value} – `;
   });
 
-  lastThrow.textContent = lastThrowString.slice(0, -3); // slice last dash
-
   // update points
   const points = document.querySelector(`${player}.points`);
+
+  if (points.textContent == newScoreboard.points) {
+    lastThrow.textContent = 'No Score';
+  } else {
+    lastThrow.textContent = lastThrowString.slice(0, -3); // slice last dash
+  }
+
   points.textContent = newScoreboard.points;
 
   // update average

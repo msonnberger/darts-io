@@ -31,7 +31,7 @@ class App implements MessageComponentInterface {
                 $this->joinRoom($from, $roomId);
                 break;
             case 'createRoom':
-                $this->createRoomAndJoin($from);
+                $this->createRoomAndJoin($from, $msgObj->settings);
                 break;
             case 'leaveRoom':
                 $this->leaveRoom($from);
@@ -80,9 +80,9 @@ class App implements MessageComponentInterface {
         }
     }
 
-    private function createRoomAndJoin(Conn $client) {
+    private function createRoomAndJoin(Conn $client, $settings) {
         if ($this->clients[$client] === null) {
-            $room = new GameRoom($client);
+            $room = new GameRoom($client, $settings->pointMode, $settings->outMode, $settings->inMode);
             $roomId = $room->getId();
             $this->rooms[$roomId] = $room;
             $this->clients[$client] = $roomId;

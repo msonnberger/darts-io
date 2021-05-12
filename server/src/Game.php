@@ -63,11 +63,11 @@ class Game {
         if ($currScore === $this->pointMode) {
             $firstMulti = intval($throws[0]->multiplier);
 
-            if ($this->inMode === 'double' and $firstMulti !== 2) {
+            if ($this->inMode === 'Double' and $firstMulti !== 2) {
                 $realScore = 0; // No score because of double-in rule
-            } else if ($this->inMode === 'triple' and $firstMulti !== 3) {
+            } else if ($this->inMode === 'Triple' and $firstMulti !== 3) {
                 $realScore = 0; // No score because of triple-in rule
-            } else if ($this->inMode === 'master' and ($firstMulti !== 2 or $firstMulti !== 3)) {
+            } else if ($this->inMode === 'Master' and ($firstMulti !== 2 or $firstMulti !== 3)) {
                 $realScore = 0; // No score because of master-in rule
             }
         }
@@ -76,11 +76,11 @@ class Game {
             $realScore = 0; // No score: overthrown
         }
 
-        if ($currScore - $score === 1 and ($this->outMode === 'double' or $this->outMode === 'master')) {
+        if ($currScore - $score === 1 and ($this->outMode === 'Double' or $this->outMode === 'Master')) {
             $realScore = 0; // No score: impossible checkout
         }
 
-        if ($currScore - $score === 2 and $this->outMode === 'triple') {
+        if ($currScore - $score === 2 and $this->outMode === 'Triple') {
             $realScore = 0; // No score: impossible checkout
         }
 
@@ -88,11 +88,11 @@ class Game {
         if ($currScore - $score === 0) {
             $lastMulti = intval($throws[2]->multiplier);
 
-            if ($this->outMode === 'double' and $lastMulti !== 2) {
+            if ($this->outMode === 'Double' and $lastMulti !== 2) {
                 $realScore = 0; // No score because of double-out rule;
-            } else if ($this->outMode === 'triple' and $lastMulti !== 3) {
+            } else if ($this->outMode === 'Triple' and $lastMulti !== 3) {
                 $realScore = 0; // No score because of triple-out rule;
-            } else if ($this->outMode === 'master' and ($lastMulti !== 2 or $lastMulti !== 3)) {
+            } else if ($this->outMode === 'Master' and ($lastMulti !== 2 or $lastMulti !== 3)) {
                 $realScore = 0; // No score becasue of master-out rule;
             }
         }
@@ -142,7 +142,7 @@ class Game {
     private function updateAverage($playerIndex) {
         $points = $this->scoreboards[$playerIndex]['points'];
         $rounds = $this->rounds[$playerIndex];
-        $avg = round(($this->pointMode - $points) / $rounds, 1);
+        $avg = number_format(round(($this->pointMode - $points) / $rounds, 1), 1);
         $this->scoreboards[$playerIndex]['average'] = $avg;
     }
 }

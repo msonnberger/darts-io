@@ -28,12 +28,12 @@ class GameRoom {
     }
 
     public function getScores() {
-        return $this->game->getScores();
+        return $this->game->getScoreboards();
     }
 
     public function getScore(Conn $player) {
         $playerIndex = array_search($player, $this->players);
-        return $this->game->getScore($playerIndex);
+        return $this->game->getScoreboard($playerIndex);
     }
 
     public function getId() {

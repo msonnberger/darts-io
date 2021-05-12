@@ -249,6 +249,7 @@ button:active {
   width: 100vw;
   justify-content: space-evenly;
   align-items: center;
+  flex-grow: 2;
 }
 
 .game-wrapper {
@@ -334,6 +335,10 @@ button:active {
 
 .stat-value {
   font-weight: 300;
+}
+
+.stat-label {
+  margin-right: 2rem;
 }
 
 .points {
