@@ -21,6 +21,8 @@ conn.onmessage = (msg) => {
     updateScoreboard(msgData.content.scoreboard, true);
   } else if (cmd === 'otherScoreboard') {
     updateScoreboard(msgData.content.scoreboard, false);
+  } else if (cmd === 'error') {
+    createErrorModal(msgData.errorMessage, msgData.isFatal);
   }
 };
 
@@ -134,7 +136,7 @@ function closeSettings() {
 }
 
 function closeModals() {
-  const modals = document.querySelectorAll('.modal');
+  const modals = document.querySelectorAll('.modal.open');
   modals.forEach((modal) => {
     modal.classList.remove('open');
   });
@@ -142,11 +144,7 @@ function closeModals() {
 }
 
 const overlay = document.querySelector('.overlay');
-overlay.addEventListener('click', () => {
-  const modal = document.querySelector('.settings-modal.open');
-  overlay.classList.remove('open');
-  modal.classList.remove('open');
-});
+overlay.addEventListener('click', closeModals);
 
 function attachEventListeners() {
   const numberButtons = document.querySelectorAll('.number');
@@ -313,4 +311,38 @@ function getAllSiblings(element) {
     sibling = sibling.nextSibling;
   }
   return siblings;
+}
+
+function createErrorModal(errorMessage, isFatal) {
+  const heading = document.createElement('h2');
+  heading.classList.add('modal-heading');
+  heading.textContent = 'Es ist etwas schiefgelaufen';
+
+  const errorText = document.createElement('p');
+  errorText.classList.add('modal-text');
+  errorText.textContent = errorMessage;
+
+  const button = document.createElement('button');
+  button.classList.add('btn-primary');
+
+  if (isFatal) {
+    button.textContent = 'Neu laden';
+    button.addEventListener('click', reloadPage);
+  } else {
+    button.textContent = 'Schließen';
+    button.addEventListener('click', closeModals);
+  }
+
+  const modal = document.createElement('div');
+  modal.classList.add('modal', 'open');
+  modal.appendChild(heading);
+  modal.appendChild(errorText);
+  modal.appendChild(button);
+
+  document.querySelector('main').appendChild(modal);
+  document.querySelector('.overlay').classList.add('open');
+}
+
+function reloadPage() {
+  location.reload();
 }

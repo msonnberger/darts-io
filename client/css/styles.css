@@ -148,9 +148,7 @@ button:active {
   background-color: var(--light);
 }
 
-.settings-modal {
-  display: flex;
-  flex-direction: column;
+.modal {
   position: fixed;
   top: 53%;
   left: 50%;
@@ -165,13 +163,18 @@ button:active {
   box-shadow: 0px 8px 15px var(--dark-transparent);
 }
 
-.settings-modal.open {
+.modal.open {
   visibility: visible;
   transform: translate(-50%, -50%) scale(1);
   transition: 200ms ease;
 }
 
-.settings-heading {
+.settings-modal {
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-heading {
   margin-top: 0;
 }
 

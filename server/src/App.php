@@ -134,11 +134,15 @@ class App implements MessageComponentInterface {
 
     private function addThrow(Conn $client, $throw) {
         $room = $this->getClientRoom($client);
-        $scoreboard = $room->newScore($client, $throw);
 
-        $msgContent = array('scoreboard' => $scoreboard);
-        $client->send($this->createMessageString('ownScoreboard', $msgContent));
-        $this->broadcastRoomExceptFrom($client, $this->createMessageString('otherScoreboard', $msgContent));
+        try {
+            $scoreboard = $room->newScore($client, $throw);
+            $msgContent = array('scoreboard' => $scoreboard);
+            $client->send($this->createMessageString('ownScoreboard', $msgContent));
+            $this->broadcastRoomExceptFrom($client, $this->createMessageString('otherScoreboard', $msgContent));
+        } catch (\Exception $e) {
+            $this->sendError($client, $e->getMessage());
+        }
     }
 
     private function sendScores(Conn $client) {
@@ -153,8 +157,8 @@ class App implements MessageComponentInterface {
         return $this->rooms[$this->clients[$client]];
     }
 
-    private function sendError(Conn $client, $errorMessage) {
-        $error = array('cmd' => 'error', 'errorMessage' => $errorMessage);
+    private function sendError(Conn $client, $errorMessage, $isFatal = false) {
+        $error = array('cmd' => 'error', 'errorMessage' => $errorMessage, 'isFatal' => $isFatal);
         $client->send(json_encode($error));
         echo "ERROR: $errorMessage\n";
     }

@@ -27,6 +27,10 @@ class Game {
         $this->inMode = $settings['inMode'];
     }
 
+    public function __destruct() {
+        // TODO: Save game to database
+    }
+
     public function getScoreboards() {
         return $this->scoreboards;
     }
@@ -37,16 +41,16 @@ class Game {
 
     public function newScore($playerIndex, $throws) {
         if ($playerIndex !== 0 && $playerIndex !== 1) {
-            throw new \Exception('This player does not exist.');
+            throw new \Exception('Dieser Spieler existiert nicht.');
         }
 
         if ($playerIndex === 0) {
             if ($this->rounds[0] !== $this->rounds[1]) {
-                throw new \Exception('Wrong player.');
+                throw new \Exception('Du bist nicht an der Reihe');
             }
         } else {
             if ($this->rounds[1] !== $this->rounds[0] - 1) {
-                throw new \Exception('Wrong player.');
+                throw new \Exception('Du bist nicht an der Reihe.');
             }
         }
 
@@ -54,7 +58,7 @@ class Game {
         $realScore = $score;
 
         if ($score === -1) {
-            throw new \Exception('Invalid Score!');
+            throw new \Exception('Ungültiger Score!');
         }
 
         $currScore = $this->getScoreboard($playerIndex)['points'];
