@@ -60,6 +60,13 @@ function fetchGameScreen() {
     .catch((err) => console.error(err));
 }
 
+function newGame() {
+  const settings = getSettings();
+  const msg = { cmd: 'newGame', settings };
+
+  conn.send(JSON.stringify(msg));
+}
+
 const createRoomButton = document.getElementById('create-room-btn');
 createRoomButton.addEventListener('click', () => {
   const settings = getSettings();
@@ -276,6 +283,15 @@ function updateScoreboard(newScoreboard, ownScoreboard) {
 
   points.textContent = newScoreboard.points;
 
+  if (points.textContent == 0) {
+    // game ended
+    if (ownScoreboard) {
+      createWinnerModal();
+    } else {
+      createLoserModal();
+    }
+  }
+
   // update average
   const average = document.querySelector(`${player}.stat-value.avg`);
   average.textContent = newScoreboard.average;
@@ -315,11 +331,11 @@ function getAllSiblings(element) {
 
 function createErrorModal(errorMessage, isFatal) {
   const heading = document.createElement('h2');
-  heading.classList.add('modal-heading');
+  heading.classList.add('modal-heading', 'error-heading');
   heading.textContent = 'Es ist etwas schiefgelaufen';
 
   const errorText = document.createElement('p');
-  errorText.classList.add('modal-text');
+  errorText.classList.add('modal-text', 'error-text');
   errorText.textContent = errorMessage;
 
   const button = document.createElement('button');
@@ -334,10 +350,70 @@ function createErrorModal(errorMessage, isFatal) {
   }
 
   const modal = document.createElement('div');
-  modal.classList.add('modal', 'open');
+  modal.classList.add('modal', 'open', 'error-modal');
   modal.appendChild(heading);
   modal.appendChild(errorText);
   modal.appendChild(button);
+
+  document.querySelector('main').appendChild(modal);
+  document.querySelector('.overlay').classList.add('open');
+}
+
+function createWinnerModal() {
+  const heading = document.createElement('h2');
+  heading.classList.add('modal-heading', 'winner-heading');
+  heading.textContent = 'Du hast gewonnen! 🎉';
+
+  const errorText = document.createElement('p');
+  errorText.classList.add('modal-text');
+  errorText.textContent = 'Gratulation zum Sieg!';
+
+  const newGameButton = document.createElement('button');
+  newGameButton.classList.add('btn-primary');
+  newGameButton.textContent = 'Neues Spiel';
+  newGameButton.addEventListener('click', newGame);
+
+  const closeButton = document.createElement('button');
+  closeButton.classList.add('btn-secondary');
+  closeButton.textContent = 'Beenden';
+  closeButton.addEventListener('click', reloadPage);
+
+  const modal = document.createElement('div');
+  modal.classList.add('modal', 'open');
+  modal.appendChild(heading);
+  modal.appendChild(errorText);
+  modal.appendChild(closeButton);
+  modal.appendChild(newGameButton);
+
+  document.querySelector('main').appendChild(modal);
+  document.querySelector('.overlay').classList.add('open');
+}
+
+function createLoserModal() {
+  const heading = document.createElement('h2');
+  heading.classList.add('modal-heading', 'loser-heading');
+  heading.textContent = 'Du hast leider verloren :(';
+
+  const errorText = document.createElement('p');
+  errorText.classList.add('modal-text');
+  errorText.textContent = 'Vordere deinen Gegner zu einer Revanche heraus!';
+
+  const newGameButton = document.createElement('button');
+  newGameButton.classList.add('btn-primary');
+  newGameButton.textContent = 'Neues Spiel';
+  newGameButton.addEventListener('click', newGame);
+
+  const closeButton = document.createElement('button');
+  closeButton.classList.add('btn-secondary');
+  closeButton.textContent = 'Beenden';
+  closeButton.addEventListener('click', reloadPage);
+
+  const modal = document.createElement('div');
+  modal.classList.add('modal', 'open');
+  modal.appendChild(heading);
+  modal.appendChild(errorText);
+  modal.appendChild(closeButton);
+  modal.appendChild(newGameButton);
 
   document.querySelector('main').appendChild(modal);
   document.querySelector('.overlay').classList.add('open');
