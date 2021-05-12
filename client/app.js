@@ -17,10 +17,10 @@ conn.onmessage = (msg) => {
     roomId = msgData.content.roomId;
   } else if (cmd === 'leftRoom') {
     removeGameScreen();
-  } else if (cmd === 'ownScore') {
-    updateScore(msgData.content.score, true);
-  } else if (cmd === 'otherScore') {
-    updateScore(msgData.content.score, false);
+  } else if (cmd === 'ownScoreboard') {
+    updateScoreboard(msgData.content.scoreboard, true);
+  } else if (cmd === 'otherScoreboard') {
+    updateScoreboard(msgData.content.scoreboard, false);
   }
 };
 
@@ -237,18 +237,46 @@ function attachEventListeners() {
       };
 
       conn.send(JSON.stringify(msg));
+
+      document.querySelector('.throw').textContent = '';
     }
   });
 }
 
-function updateScore(score, ownScore) {
-  const points = document.querySelectorAll('.points');
+function updateScoreboard(newScoreboard, ownScoreboard) {
+  const player = ownScoreboard ? '.player1' : '.player2';
 
-  if (ownScore) {
-    points[0].textContent = score;
-  } else {
-    points[1].textContent = score;
-  }
+  // update last throw
+  const lastThrow = document.querySelector(`${player}.last-throw`);
+  let lastThrowString = '';
+
+  newScoreboard.lastThrow.forEach((throwElement) => {
+    if (throwElement.multiplier == 2) {
+      lastThrowString += 'D';
+    } else if (throwElement.multiplier == 3) {
+      lastThrowString += 'T';
+    }
+    lastThrowString += `${throwElement.value} – `;
+  });
+
+  lastThrow.textContent = lastThrowString.slice(0, -3); // slice last dash
+
+  // update points
+  const points = document.querySelector(`${player}.points`);
+  points.textContent = newScoreboard.points;
+
+  // update average
+  const average = document.querySelector(`${player}.stat-value.avg`);
+  average.textContent = newScoreboard.average;
+
+  // update high scorings
+  const amounts = newScoreboard.highScorings;
+
+  document.querySelector(`${player}.plus-180`).textContent = amounts['180'];
+  document.querySelector(`${player}.plus-160`).textContent = amounts['160'];
+  document.querySelector(`${player}.plus-140`).textContent = amounts['140'];
+  document.querySelector(`${player}.plus-120`).textContent = amounts['120'];
+  document.querySelector(`${player}.plus-100`).textContent = amounts['100'];
 }
 
 function updateRoomId(roomId) {

@@ -134,11 +134,11 @@ class App implements MessageComponentInterface {
 
     private function addThrow(Conn $client, $throw) {
         $room = $this->getClientRoom($client);
-        $score = $room->newScore($client, $throw);
+        $scoreboard = $room->newScore($client, $throw);
 
-        $msgContent = array('score' => $score);
-        $client->send($this->createMessageString('ownScore', $msgContent));
-        $this->broadcastRoomExceptFrom($client, $this->createMessageString('otherScore', $msgContent));
+        $msgContent = array('scoreboard' => $scoreboard);
+        $client->send($this->createMessageString('ownScoreboard', $msgContent));
+        $this->broadcastRoomExceptFrom($client, $this->createMessageString('otherScoreboard', $msgContent));
     }
 
     private function sendScores(Conn $client) {

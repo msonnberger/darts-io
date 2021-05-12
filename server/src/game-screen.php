@@ -872,6 +872,7 @@
     <div class="right-screen">
       <div class="scoreboards">
         <div class="player1 scoreboard">
+          <div class="player1 last-throw"></div>
           <h2 class="player1 points">501</h2>
           <div class="player1 avg-container stat-container">
             <h4 class="player1 avg-label stat-label">Avg</h4>
@@ -880,28 +881,28 @@
           <div class="player1 highest-throws">
             <div class="player1 180-container stat-container">
               <h4 class="player1 180-label stat-label">180</h4>
-              <span class="player1 180 stat-value">0</span>
+              <span class="player1 plus-180 stat-value">0</span>
             </div>
             <div class="player1 160-container stat-container">
               <h4 class="player1 160-label stat-label">160+</h4>
-              <span class="player1 160 stat-value">0</span>
+              <span class="player1 plus-160 stat-value">0</span>
             </div>
             <div class="player1 140-container stat-container">
               <h4 class="player1 140-label stat-label">140+</h4>
-              <span class="player1 140 stat-value">0</span>
+              <span class="player1 plus-140 stat-value">0</span>
             </div>
             <div class="player1 120-container stat-container">
               <h4 class="player1 120-label stat-label">120+</h4>
-              <span class="player1 120 stat-value">0</span>
+              <span class="player1 plus-120 stat-value">0</span>
             </div>
             <div class="player1 100-container stat-container">
               <h4 class="player1 100-label stat-label">100+</h4>
-              <span class="player1 100 stat-value">0</span>
+              <span class="player1 plus-100 stat-value">0</span>
             </div>
           </div>
         </div>
         <div class="player2 scoreboard">
-          <div class="last-throw">D20 – 5 – T12</div>
+          <div class="player2 last-throw"></div>
           <h2 class="player2 points">501</h2>
           <div class="player2 avg-container stat-container">
             <h4 class="player2 avg-label stat-label">Avg</h4>
@@ -910,23 +911,23 @@
           <div class="player2 highest-throws">
             <div class="player2 180-container stat-container">
               <h4 class="player2 180-label stat-label">180</h4>
-              <span class="player2 180 stat-value">0</span>
+              <span class="player2 plus-180 stat-value">0</span>
             </div>
             <div class="player2 160-container stat-container">
               <h4 class="player2 160-label stat-label">160+</h4>
-              <span class="player2 160 stat-value">0</span>
+              <span class="player2 plus-160 stat-value">0</span>
             </div>
             <div class="player2 140-container stat-container">
               <h4 class="player2 140-label stat-label">140+</h4>
-              <span class="player2 140 stat-value">0</span>
+              <span class="player2 plus-140 stat-value">0</span>
             </div>
             <div class="player2 120-container stat-container">
               <h4 class="player2 120-label stat-label">120+</h4>
-              <span class="player2 120 stat-value">0</span>
+              <span class="player2 plus-120 stat-value">0</span>
             </div>
             <div class="player2 100-container stat-container">
               <h4 class="player2 100-label stat-label">100+</h4>
-              <span class="player2 100 stat-value">0</span>
+              <span class="player2 plus-100 stat-value">0</span>
             </div>
           </div>
         </div>

@@ -17,6 +17,9 @@ class Game {
 
         $this->scoreboards[0]['points'] = $points;
         $this->scoreboards[1]['points'] = $points;
+
+        $this->scoreboards[0]['highScorings'] = array('180' => 0, '160' => 0, '140' => 0, '120' => 0, '100' => 0);
+        $this->scoreboards[1]['highScorings'] = array('180' => 0, '160' => 0, '140' => 0, '120' => 0, '100' => 0);
         
         $this->rounds = array(0, 0);
         $this->pointMode = $points;
@@ -94,7 +97,13 @@ class Game {
             }
         }
 
+        if ($realScore >= 100) {
+            $floor = floor($realScore / 20) * 20;
+            $this->scoreboards[$playerIndex]['highScorings']["$floor"]++;
+        }
+
         $this->scoreboards[$playerIndex]['points'] = $currScore - $realScore;
+        $this->scoreboards[$playerIndex]['lastThrow'] = $throws;
         $this->rounds[$playerIndex]++;
         $this->updateAverage($playerIndex);
 
@@ -109,10 +118,10 @@ class Game {
             $multi = intval($throw->multiplier);
             $value = intval($throw->value);
 
-            if (!is_int($multi) or $multi < 1 or $multi > 3) {
+            if ($multi < 1 or $multi > 3) {
                 return -1;
             }
-            if (!is_int($value) or $value < 0 or ($value > 20 and $value !== 25 and $value !== 50)) {
+            if ($value < 0 or ($value > 20 and $value !== 25 and $value !== 50)) {
                 return -1;
             }
 
@@ -123,13 +132,17 @@ class Game {
             return -1;
         }
 
+        if ($score > 180) {
+            return -1;
+        }
+
         return $score;
     }
 
     private function updateAverage($playerIndex) {
         $points = $this->scoreboards[$playerIndex]['points'];
         $rounds = $this->rounds[$playerIndex];
-        $avg = round($points / $rounds, 1);
+        $avg = round(($this->pointMode - $points) / $rounds, 1);
         $this->scoreboards[$playerIndex]['average'] = $avg;
     }
 }
