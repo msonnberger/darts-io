@@ -3,7 +3,7 @@
 namespace RemoteDarts;
 
 class Game {
-    private $scores;
+    private $scoreboards;
     private $rounds;
     private $pointMode;
     private $outMode;
@@ -11,19 +11,25 @@ class Game {
 
     public function __construct($settings) {
         $points = $settings['pointMode'];
-        $this->scores = array($points, $points);
+        $this->scoreboards = array();
+        $this->scoreboards[0] = array();
+        $this->scoreboards[1] = array();
+
+        $this->scoreboards[0]['points'] = $points;
+        $this->scoreboards[1]['points'] = $points;
+        
         $this->rounds = array(0, 0);
         $this->pointMode = $points;
         $this->outMode = $settings['outMode'];
         $this->inMode = $settings['inMode'];
     }
 
-    public function getScores() {
-        return $this->scores;
+    public function getScoreboards() {
+        return $this->scoreboards;
     }
 
-    public function getScore($index) {
-        return $this->scores[$index];
+    public function getScoreboard($index) {
+        return $this->scoreboards[$index];
     }
 
     public function newScore($playerIndex, $throws) {
@@ -42,29 +48,37 @@ class Game {
         }
 
         $score = $this->calcScore($throws);
+        $realScore = $score;
+
         if ($score === -1) {
             throw new \Exception('Invalid Score!');
         }
 
-        $currScore = $this->getScore($playerIndex);
+        $currScore = $this->getScoreboard($playerIndex)['points'];
 
         // first throw
         if ($currScore === $this->pointMode) {
             $firstMulti = intval($throws[0]->multiplier);
 
             if ($this->inMode === 'double' and $firstMulti !== 2) {
-                throw new \Exception('Double-In!');
+                $realScore = 0; // No score because of double-in rule
             } else if ($this->inMode === 'triple' and $firstMulti !== 3) {
-                throw new \Exception('Triple-In!');
+                $realScore = 0; // No score because of triple-in rule
             } else if ($this->inMode === 'master' and ($firstMulti !== 2 or $firstMulti !== 3)) {
-                throw new \Exception('Master-In!');
+                $realScore = 0; // No score because of master-in rule
             }
         }
 
-        if ($currScore - $score < 0 or $currScore - $score === 1) {
-            var_dump($this->scores);
-            echo "$score\n";
-            throw new \Exception('No Score!');
+        if ($currScore - $score < 0) {
+            $realScore = 0; // No score: overthrown
+        }
+
+        if ($currScore - $score === 1 and ($this->outMode === 'double' or $this->outMode === 'master')) {
+            $realScore = 0; // No score: impossible checkout
+        }
+
+        if ($currScore - $score === 2 and $this->outMode === 'triple') {
+            $realScore = 0; // No score: impossible checkout
         }
 
         // last throw
@@ -72,18 +86,19 @@ class Game {
             $lastMulti = intval($throws[2]->multiplier);
 
             if ($this->outMode === 'double' and $lastMulti !== 2) {
-                throw new \Exception('Double-Out!');
+                $realScore = 0; // No score because of double-out rule;
             } else if ($this->outMode === 'triple' and $lastMulti !== 3) {
-                throw new \Exception('Triple-Out!');
+                $realScore = 0; // No score because of triple-out rule;
             } else if ($this->outMode === 'master' and ($lastMulti !== 2 or $lastMulti !== 3)) {
-                throw new \Exception('Master-Out!');
+                $realScore = 0; // No score becasue of master-out rule;
             }
         }
 
-        $this->scores[$playerIndex] = $currScore - $score;
+        $this->scoreboards[$playerIndex]['points'] = $currScore - $realScore;
         $this->rounds[$playerIndex]++;
+        $this->updateAverage($playerIndex);
 
-        return $this->scores[$playerIndex];
+        return $this->scoreboards[$playerIndex];
     }
 
     private function calcScore($throws) {
@@ -109,6 +124,13 @@ class Game {
         }
 
         return $score;
+    }
+
+    private function updateAverage($playerIndex) {
+        $points = $this->scoreboards[$playerIndex]['points'];
+        $rounds = $this->rounds[$playerIndex];
+        $avg = round($points / $rounds, 1);
+        $this->scoreboards[$playerIndex]['average'] = $avg;
     }
 }
 
