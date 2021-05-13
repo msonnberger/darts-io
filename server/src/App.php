@@ -39,6 +39,12 @@ class App implements MessageComponentInterface {
             case 'throw':
                 $this->addThrow($from, $msgObj->throws);
                 break;
+            case 'newGame':
+                $this->newGame($from);
+                break;
+            case 'changeSettings':
+                $this->changeSettings($from, $msgObj->settings);
+                break;
             default:
                 $this->sendError($from, 'This command does not exist.');
                 break;
@@ -99,8 +105,9 @@ class App implements MessageComponentInterface {
                 try {
                     $this->rooms[$roomId]->addPlayer($client);
                     $this->clients[$client] = $roomId;
+                    $settings = $this->rooms[$roomId]->getSettings();
 
-                    $msgContent = array('roomId' => $roomId);
+                    $msgContent = array('roomId' => $roomId, 'settings' => $settings);
                     $client->send($this->createMessageString('joinedRoom', $msgContent));
                 } catch (\Exception $e) {
                     $this->sendError($client, $e->getMessage());
@@ -145,12 +152,14 @@ class App implements MessageComponentInterface {
         }
     }
 
-    private function sendScores(Conn $client) {
-        $roomId = $this->clients[$client];
+    private function newGame(Conn $client) {
         $room = $this->getClientRoom($client);
-        $scores = $room->getScores();
-        $msgContent = array('scores' => $scores);
-        $this->broadcastRoom($roomId, $this->createMessageString('scores', $msgContent));
+        $room->newGame();
+    }
+
+    private function changeSettings(Conn $client, $settings) {
+        $room = $this->getClientRoom($client);
+        $room->changeSettings($settings);
     }
 
     private function getClientRoom(Conn $client) {

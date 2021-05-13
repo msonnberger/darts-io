@@ -1,5 +1,6 @@
 const conn = new WebSocket('ws://192.168.178.21:9080');
 let roomId;
+let settings = {};
 
 conn.onopen = (event) => {
   console.log('Connection established!');
@@ -14,9 +15,12 @@ conn.onmessage = (msg) => {
     roomId = msgData.content.id;
   } else if (cmd === 'joinedRoom') {
     fetchGameScreen();
+    settings = msgData.content.settings;
+    updateSettingsModal();
     roomId = msgData.content.roomId;
   } else if (cmd === 'leftRoom') {
     removeGameScreen();
+    startScreenSettingsModal();
   } else if (cmd === 'ownScoreboard') {
     updateScoreboard(msgData.content.scoreboard, true);
   } else if (cmd === 'otherScoreboard') {
@@ -52,36 +56,104 @@ function fetchGameScreen() {
         .querySelector('main')
         .appendChild(gameScreen.getRootNode().body.firstChild);
       startScreen.classList.remove('active');
-      closeSettings();
-      attachEventListeners();
       document.querySelector('.game-header').classList.add('active');
+      closeSettings();
+      inGameSettingsModal();
+      attachEventListeners();
+      clearScoreboards();
       updateRoomId(roomId);
     })
     .catch((err) => console.error(err));
 }
 
 function newGame() {
-  const settings = getSettings();
-  const msg = { cmd: 'newGame', settings };
-
+  const msg = { cmd: 'newGame' };
   conn.send(JSON.stringify(msg));
+  clearScoreboards();
 }
 
-const createRoomButton = document.getElementById('create-room-btn');
-createRoomButton.addEventListener('click', () => {
-  const settings = getSettings();
-  const msg = { cmd: 'createRoom', settings };
+const settingsPrimaryBtn = document.querySelector(
+  '.settings-buttons .btn-primary'
+);
+settingsPrimaryBtn.addEventListener('click', () => {
+  setSettingsFromModal();
+  buttonId = settingsPrimaryBtn.id;
+  const msg = {};
+  msg.cmd = buttonId === 'create-room-btn' ? 'createRoom' : 'changeSettings';
+  msg.settings = settings;
 
   conn.send(JSON.stringify(msg));
+  closeSettings();
 });
 
-function getSettings() {
-  const pointMode = document.querySelector('.point-item.selected').textContent;
-  const inMode = document.querySelector('.in-mode-item.selected').textContent;
-  const outMode = document.querySelector('.out-mode-item.selected').textContent;
+function setSettingsFromModal() {
+  settings.pointMode = document.querySelector(
+    '.point-item.selected'
+  ).textContent;
+  settings.inMode = document.querySelector(
+    '.in-mode-item.selected'
+  ).textContent;
+  settings.outMode = document.querySelector(
+    '.out-mode-item.selected'
+  ).textContent;
+}
 
-  const settings = { pointMode, inMode, outMode };
-  return settings;
+function updateSettingsModal() {
+  const pointItems = document.querySelectorAll('.point-item');
+  pointItems.forEach((item) => {
+    if (item.textContent == settings.pointMode) {
+      item.classList.add('selected');
+      getAllSiblings(item).forEach((sibling) => {
+        sibling.classList.remove('selected');
+      });
+    }
+  });
+
+  const inModeItems = document.querySelectorAll('.in-mode-item');
+  inModeItems.forEach((item) => {
+    if (item.textContent == settings.inMode) {
+      item.classList.add('selected');
+      getAllSiblings(item).forEach((sibling) => {
+        sibling.classList.remove('selected');
+      });
+    }
+  });
+
+  const outModeItems = document.querySelectorAll('.out-mode-item');
+  outModeItems.forEach((item) => {
+    if (item.textContent == settings.outMode) {
+      item.classList.add('selected');
+      getAllSiblings(item).forEach((sibling) => {
+        sibling.classList.remove('selected');
+      });
+    }
+  });
+
+  moveSelectors();
+}
+
+function inGameSettingsModal() {
+  const button = document.querySelector('.settings-buttons .btn-primary');
+  button.textContent = 'Speichern';
+  button.id = 'send-settings-btn';
+
+  const info = document.createElement('p');
+  info.classList.add('settings-info');
+  info.textContent = 'Einstellungen werden beim nächsten Spiel übernommen.';
+
+  document
+    .querySelector('.settings-modal')
+    .insertBefore(info, button.parentElement);
+}
+
+function startScreenSettingsModal() {
+  const modal = document.querySelector('.settings-modal');
+  const info = document.querySelector('.settings-info');
+  const button = document.querySelector('.settings-buttons .btn-primary');
+
+  modal.removeChild(info);
+  button.textContent = 'Raum erstellen';
+  button.id = 'create-room-btn';
 }
 
 const joinRoomButton = document.getElementById('join-room-btn');
@@ -304,6 +376,27 @@ function updateScoreboard(newScoreboard, ownScoreboard) {
   document.querySelector(`${player}.plus-140`).textContent = amounts['140'];
   document.querySelector(`${player}.plus-120`).textContent = amounts['120'];
   document.querySelector(`${player}.plus-100`).textContent = amounts['100'];
+}
+
+function clearScoreboards() {
+  const emptyScoreboard = {
+    lastThrow: [],
+    points: settings.pointMode,
+    average: '0.0',
+    highScorings: {
+      180: 0,
+      160: 0,
+      140: 0,
+      120: 0,
+      100: 0,
+    },
+  };
+
+  updateScoreboard(emptyScoreboard, true);
+  updateScoreboard(emptyScoreboard, false);
+  document
+    .querySelectorAll('.last-throw')
+    .forEach((element) => (element.textContent = ''));
 }
 
 function updateRoomId(roomId) {

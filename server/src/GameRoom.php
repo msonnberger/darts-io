@@ -1,7 +1,6 @@
 <?php
 namespace RemoteDarts;
 use Ratchet\ConnectionInterface as Conn;
-use stdClass;
 
 class GameRoom {
     private $id;
@@ -40,6 +39,10 @@ class GameRoom {
         return $this->id;
     }
 
+    public function getSettings() {
+        return $this->settings;
+    }
+
     public function addPlayer(Conn $player) {
         if (count($this->players) >= 2) {
             throw new \Exception('Player Limit is reached!');
@@ -52,7 +55,8 @@ class GameRoom {
         if (count($this->players) === 0) {
             throw new \Exception('No Players in this Room!');
         }
-        unset($this->players[$player->resourceId]);
+        $index = array_search($player, $this->players);
+        unset($this->players[$index]);
         echo "Connection $player->resourceId left Room {$this->getId()}\n";
     }
 
@@ -61,10 +65,10 @@ class GameRoom {
         return $this->game->newScore($playerIndex, $throws);
     }
 
-    public function changeSettings($pointMode, $outMode, $inMode) {
-        $this->settings['pointMode'] = $pointMode;
-        $this->settings['outMode'] = $outMode;
-        $this->settings['inMode'] = $inMode;
+    public function changeSettings($settings) {
+        $this->settings['pointMode'] = $settings->pointMode;
+        $this->settings['outMode'] = $settings->outMode;
+        $this->settings['inMode'] = $settings->inMode;
     }
 
     public function newGame() {

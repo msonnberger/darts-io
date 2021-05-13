@@ -29,6 +29,7 @@ class Game {
 
     public function __destruct() {
         // TODO: Save game to database
+        echo "called destructor\n";
     }
 
     public function getScoreboards() {
