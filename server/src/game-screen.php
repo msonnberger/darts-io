@@ -935,8 +935,8 @@
       <div class="throw-container">
         <p class="throw"></p>
         <div class="throw-buttons">
-          <button class="btn-secondary" id="edit-throw-btn">Zurück</button>
-          <button class="btn-primary" id="send-score-btn">OK</button>
+          <button class="btn-secondary" id="edit-throw-btn" disabled>Zurück</button>
+          <button class="btn-primary" id="send-score-btn" disabled>OK</button>
         </div>
       </div>
     </div>

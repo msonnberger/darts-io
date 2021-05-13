@@ -2,6 +2,12 @@ const conn = new WebSocket('ws://192.168.178.21:9080');
 let roomId;
 let settings = {};
 
+setTimeout(() => {
+  if (conn.readyState === 3) {
+    createErrorModal('Verbindung konnte nicht hergestellt werden', true);
+  }
+}, 5000);
+
 conn.onopen = (event) => {
   console.log('Connection established!');
 };
@@ -10,23 +16,36 @@ conn.onmessage = (msg) => {
   const msgData = JSON.parse(msg.data);
   const cmd = msgData.cmd;
 
-  if (cmd === 'createdRoom') {
-    fetchGameScreen();
-    roomId = msgData.content.id;
-  } else if (cmd === 'joinedRoom') {
-    fetchGameScreen();
-    settings = msgData.content.settings;
-    updateSettingsModal();
-    roomId = msgData.content.roomId;
-  } else if (cmd === 'leftRoom') {
-    removeGameScreen();
-    startScreenSettingsModal();
-  } else if (cmd === 'ownScoreboard') {
-    updateScoreboard(msgData.content.scoreboard, true);
-  } else if (cmd === 'otherScoreboard') {
-    updateScoreboard(msgData.content.scoreboard, false);
-  } else if (cmd === 'error') {
-    createErrorModal(msgData.errorMessage, msgData.isFatal);
+  switch (cmd) {
+    case 'createdRoom':
+      fetchGameScreen('left');
+      roomId = msgData.content.id;
+      break;
+    case 'joinedRoom':
+      fetchGameScreen('right');
+      settings = msgData.content.settings;
+      updateSettingsModal();
+      roomId = msgData.content.roomId;
+      break;
+    case 'leftRoom':
+      removeGameScreen();
+      startScreenSettingsModal();
+      break;
+    case 'scoreboard':
+      updateScoreboard(msgData.content.scoreboard, msgData.content.isOwn);
+      break;
+    case 'newGame':
+      closeModals();
+      settings = msgData.content.settings;
+      clearScoreboards();
+      toggleActiveScoreboard();
+      updateSettingsModal();
+      break;
+    case 'error':
+      createErrorModal(msgData.errorMessage, msgData.isFatal);
+      break;
+    default:
+      break;
   }
 };
 
@@ -45,7 +64,7 @@ function removeGameScreen() {
   document.querySelector('main').removeChild(game);
 }
 
-function fetchGameScreen() {
+function fetchGameScreen(side) {
   fetch('../server/src/game-screen.php')
     .then((res) => res.text())
     .then((data) => {
@@ -62,6 +81,7 @@ function fetchGameScreen() {
       attachEventListeners();
       clearScoreboards();
       updateRoomId(roomId);
+      toggleActiveScoreboard(side);
     })
     .catch((err) => console.error(err));
 }
@@ -280,7 +300,10 @@ function attachEventListeners() {
     const currentThrowCount = throwList.childElementCount;
 
     if (currentThrowCount < 3) {
-      const dash = currentThrowCount == 2 ? '' : ' – '; // no dash if last element gets added
+      document.querySelector('#send-score-btn').disabled =
+        currentThrowCount < 2;
+      document.querySelector('#edit-throw-btn').disabled = false;
+      const dash = currentThrowCount === 2 ? '' : ' – '; // no dash if last element gets added
       const span = document.createElement('span');
       span.dataset.value = value;
       span.dataset.multiplier = multiplier;
@@ -299,9 +322,12 @@ function attachEventListeners() {
 
   const editThrowButton = document.querySelector('#edit-throw-btn');
   editThrowButton.addEventListener('click', () => {
+    document.querySelector('#send-score-btn').disabled = true;
     const throwList = document.querySelector('.throw');
     if (throwList.childElementCount > 0) {
       throwList.removeChild(throwList.lastElementChild);
+
+      editThrowButton.disabled = throwList.childElementCount < 1;
     }
   });
 
@@ -324,11 +350,14 @@ function attachEventListeners() {
       conn.send(JSON.stringify(msg));
 
       document.querySelector('.throw').textContent = '';
+      document.querySelector('#send-score-btn').disabled = true;
+      document.querySelector('#edit-throw-btn').disabled = true;
     }
   });
 }
 
 function updateScoreboard(newScoreboard, ownScoreboard) {
+  toggleActiveScoreboard();
   const player = ownScoreboard ? '.player1' : '.player2';
 
   // update last throw
@@ -358,9 +387,9 @@ function updateScoreboard(newScoreboard, ownScoreboard) {
   if (points.textContent == 0) {
     // game ended
     if (ownScoreboard) {
-      createWinnerModal();
+      createEndScreenModal(true);
     } else {
-      createLoserModal();
+      createEndScreenModal(false);
     }
   }
 
@@ -397,6 +426,18 @@ function clearScoreboards() {
   document
     .querySelectorAll('.last-throw')
     .forEach((element) => (element.textContent = ''));
+}
+
+function toggleActiveScoreboard(side = 'both') {
+  if (side === 'both') {
+    document.querySelectorAll('.scoreboard').forEach((board) => {
+      board.classList.toggle('disabled');
+    });
+  } else if (side === 'left') {
+    document.querySelector('.scoreboard.player2').classList.toggle('disabled');
+  } else if (side === 'right') {
+    document.querySelector('.scoreboard.player1').classList.toggle('disabled');
+  }
 }
 
 function updateRoomId(roomId) {
@@ -452,14 +493,25 @@ function createErrorModal(errorMessage, isFatal) {
   document.querySelector('.overlay').classList.add('open');
 }
 
-function createWinnerModal() {
+function createEndScreenModal(winner) {
   const heading = document.createElement('h2');
-  heading.classList.add('modal-heading', 'winner-heading');
-  heading.textContent = 'Du hast gewonnen! 🎉';
 
-  const errorText = document.createElement('p');
-  errorText.classList.add('modal-text');
-  errorText.textContent = 'Gratulation zum Sieg!';
+  if (winner) {
+    heading.classList.add('modal-heading', 'winner-heading');
+    heading.textContent = 'Du hast gewonnen! 🎉';
+  } else {
+    heading.classList.add('modal-heading', 'loser-heading');
+    heading.textContent = 'Du hast leider verloren :(';
+  }
+
+  const text = document.createElement('p');
+  text.classList.add('modal-text');
+
+  if (winner) {
+    text.textContent = 'Gratulation zum Sieg!';
+  } else {
+    text.textContent = 'Vordere deinen Gegner zu einer Revanche heraus!';
+  }
 
   const newGameButton = document.createElement('button');
   newGameButton.classList.add('btn-primary');
@@ -474,37 +526,7 @@ function createWinnerModal() {
   const modal = document.createElement('div');
   modal.classList.add('modal', 'open');
   modal.appendChild(heading);
-  modal.appendChild(errorText);
-  modal.appendChild(closeButton);
-  modal.appendChild(newGameButton);
-
-  document.querySelector('main').appendChild(modal);
-  document.querySelector('.overlay').classList.add('open');
-}
-
-function createLoserModal() {
-  const heading = document.createElement('h2');
-  heading.classList.add('modal-heading', 'loser-heading');
-  heading.textContent = 'Du hast leider verloren :(';
-
-  const errorText = document.createElement('p');
-  errorText.classList.add('modal-text');
-  errorText.textContent = 'Vordere deinen Gegner zu einer Revanche heraus!';
-
-  const newGameButton = document.createElement('button');
-  newGameButton.classList.add('btn-primary');
-  newGameButton.textContent = 'Neues Spiel';
-  newGameButton.addEventListener('click', newGame);
-
-  const closeButton = document.createElement('button');
-  closeButton.classList.add('btn-secondary');
-  closeButton.textContent = 'Beenden';
-  closeButton.addEventListener('click', reloadPage);
-
-  const modal = document.createElement('div');
-  modal.classList.add('modal', 'open');
-  modal.appendChild(heading);
-  modal.appendChild(errorText);
+  modal.appendChild(text);
   modal.appendChild(closeButton);
   modal.appendChild(newGameButton);
 

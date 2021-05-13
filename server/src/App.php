@@ -144,9 +144,10 @@ class App implements MessageComponentInterface {
 
         try {
             $scoreboard = $room->newScore($client, $throw);
-            $msgContent = array('scoreboard' => $scoreboard);
-            $client->send($this->createMessageString('ownScoreboard', $msgContent));
-            $this->broadcastRoomExceptFrom($client, $this->createMessageString('otherScoreboard', $msgContent));
+            $msgContent = array('scoreboard' => $scoreboard, 'isOwn' => true);
+            $client->send($this->createMessageString('scoreboard', $msgContent));
+            $msgContent = array('scoreboard' => $scoreboard, 'isOwn' => false);
+            $this->broadcastRoomExceptFrom($client, $this->createMessageString('scoreboard', $msgContent));
         } catch (\Exception $e) {
             $this->sendError($client, $e->getMessage());
         }
@@ -155,6 +156,9 @@ class App implements MessageComponentInterface {
     private function newGame(Conn $client) {
         $room = $this->getClientRoom($client);
         $room->newGame();
+
+        $msgContent = array('settings' => $room->getSettings());
+        $this->broadcastRoom($room->getId(), $this->createMessageString('newGame', $msgContent));
     }
 
     private function changeSettings(Conn $client, $settings) {
