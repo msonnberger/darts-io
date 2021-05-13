@@ -1,1 +1,1 @@
-# MMP1 - Remote Darts Scoreboard
+# MMP1 - darts.io
