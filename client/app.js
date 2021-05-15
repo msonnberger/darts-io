@@ -2,11 +2,11 @@ const conn = new WebSocket('ws://192.168.178.21:9080');
 let roomId;
 let settings = {};
 
-setTimeout(() => {
+/* setTimeout(() => {
   if (conn.readyState === 3) {
     createErrorModal('Verbindung konnte nicht hergestellt werden', true);
   }
-}, 5000);
+}, 5000); */
 
 conn.onopen = (event) => {
   console.log('Connection established!');
@@ -196,7 +196,7 @@ function moveSelectors() {
   selectedItems.forEach((selected) => {
     const multi = Array.from(selected.parentElement.children).indexOf(selected);
     const selector = selected.parentElement.parentElement.lastElementChild;
-    selector.style.left = `${multi * 10}rem`;
+    selector.style.left = `min(${multi * 10}rem, ${multi * 20}vw`;
   });
 }
 
@@ -250,7 +250,7 @@ function attachEventListeners() {
   numberButtons.forEach((button) => {
     button.addEventListener('click', () => {
       const turnList = document.querySelector('.throw-list');
-      if (turnList.childElementCount < 3) {
+      if (turnList != null && turnList.childElementCount < 3) {
         const turnElement = document.createElement('li');
         let text = '';
         const multi = button.dataset.multiplier;
@@ -276,11 +276,14 @@ function attachEventListeners() {
       if (numberButtons[0].dataset.multiplier === multiplier) {
         numberButtons.forEach((numberButton) => {
           numberButton.textContent = numberButton.dataset.value;
-          numberButton.dataset.multiplier = 'S';
+          numberButton.dataset.multiplier = '1';
         });
       } else {
         numberButtons.forEach((numberButton) => {
-          numberButton.textContent = multiplier + numberButton.dataset.value;
+          let multiChar;
+          if (multiplier === '2') multiChar = 'D';
+          else if (multiplier === '3') multiChar = 'T';
+          numberButton.textContent = multiChar + numberButton.dataset.value;
           numberButton.dataset.multiplier = multiplier;
         });
       }

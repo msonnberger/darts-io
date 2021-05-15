@@ -1,11 +1,19 @@
-body {
-  justify-content: flex-start;
+.imprint-wrapper {
+  margin: 0 2rem;
+  text-align: center;
+  width: min(60rem, 90%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 p {
-  max-width: 48rem;
   line-height: 1.5;
-  text-align: center;
+}
+
+.imprint-text,
+.privacy-text {
+  max-width: 48rem;
 }
 
 a {
@@ -28,5 +36,4 @@ h2 {
 .license-paragraph {
   text-align: left;
   font-size: 1.8rem;
-  max-width: 60rem;
 }

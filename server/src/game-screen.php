@@ -163,10 +163,10 @@
         >
           50
         </button>
-        <button data-multiplier="D" class="score-btn special multiplier">
+        <button data-multiplier="2" class="score-btn special multiplier">
           D
         </button>
-        <button data-multiplier="T" class="score-btn special multiplier">
+        <button data-multiplier="3" class="score-btn special multiplier">
           T
         </button>
       </div>
