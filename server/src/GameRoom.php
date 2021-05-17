@@ -26,8 +26,12 @@ class GameRoom {
         return $this->players;
     }
 
-    public function getScores() {
-        return $this->game->getScoreboards();
+    public function getScores(Conn $player) {
+        $playerIndex = array_search($player, $this->players);
+        $scoreboards = array();
+        $scoreboards[0] = $this->game->getScoreboard($playerIndex);
+        $scoreboards[1] = $this->game->getScoreboard($playerIndex === 0 ? 1 : 0);
+        return $scoreboards;
     }
 
     public function getScore(Conn $player) {
@@ -57,6 +61,7 @@ class GameRoom {
         }
         $index = array_search($player, $this->players);
         unset($this->players[$index]);
+        $this->players = array_values($this->players); 
         echo "Connection $player->resourceId left Room {$this->getId()}\n";
     }
 

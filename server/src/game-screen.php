@@ -174,7 +174,7 @@
         class="dartboard"
         width="600"
         height="600"
-        viewBox="0 0 600 600"
+        viewBox="0 0 640 640"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >

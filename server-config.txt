@@ -1,0 +1,19 @@
+<Location "/~fhs45907/mmp1/">
+    RewriteEngine On
+    RewriteCond %{HTTP:Upgrade} =websocket [NC]
+    RewriteRule /(.*)           ws://localhost:9080/~fhs45907/mmp1/$1 [P,L]
+    RewriteCond %{HTTP:Upgrade} !=websocket [NC]
+    RewriteRule /(.*)           https://localhost/~fhs45907/mmp1/$1 [P,L]
+
+    ProxyPassReverse / https://localhost/~fhs45907/mmp1/
+</Location>
+
+oder
+
+<Location "/~fhs45907/mmp1/ws/">
+    ProxyPass "ws://localhost:9080/~fhs45907/"
+</Location>
+
+Reicht das zweite?
+localhost URL richtig?
+apache neustarten?

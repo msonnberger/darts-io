@@ -103,11 +103,13 @@ class App implements MessageComponentInterface {
         if (array_key_exists($roomId, $this->rooms)) {
             if ($this->clients[$client] === null) {
                 try {
-                    $this->rooms[$roomId]->addPlayer($client);
+                    $room = $this->rooms[$roomId];
+                    $room->addPlayer($client);
                     $this->clients[$client] = $roomId;
-                    $settings = $this->rooms[$roomId]->getSettings();
+                    $settings = $room->getSettings();
+                    $scoreboards = $room->getScores($client);
 
-                    $msgContent = array('roomId' => $roomId, 'settings' => $settings);
+                    $msgContent = array('roomId' => $roomId, 'settings' => $settings, 'scoreboards' => $scoreboards);
                     $client->send($this->createMessageString('joinedRoom', $msgContent));
                 } catch (\Exception $e) {
                     $this->sendError($client, $e->getMessage());

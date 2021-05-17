@@ -338,8 +338,32 @@ button:disabled {
 }
 
 .dartboard {
-  width: clamp(60rem, 45vw, 80rem);
-  height: clamp(60rem, 45vw, 80rem);
+  width: clamp(62rem, 45vw, 80rem);
+  height: clamp(62rem, 45vw, 80rem);
+}
+
+.black-ring {
+  filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.3));
+}
+
+.darts-field {
+  cursor: pointer;
+}
+
+.darts-field.white:hover {
+  fill: var(--darts-white-dark);
+}
+
+.darts-field.black:hover {
+  fill: #333;
+}
+
+.darts-field.red:hover {
+  fill: var(--darts-red-dark);
+}
+
+.darts-field.green:hover {
+  fill: var(--darts-green-dark);
 }
 
 .scoreboards {
@@ -436,14 +460,6 @@ button:disabled {
   text-align: center;
   height: 5rem;
   line-height: 5rem;
-}
-
-.darts-field {
-  cursor: pointer;
-}
-
-.darts-field:hover {
-  fill: var(--primary);
 }
 
 .room-id-paragraph {

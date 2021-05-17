@@ -22,7 +22,7 @@ conn.onmessage = (msg) => {
       roomId = msgData.content.id;
       break;
     case 'joinedRoom':
-      fetchGameScreen('right');
+      fetchGameScreen('right', msgData.content.scoreboards);
       settings = msgData.content.settings;
       updateSettingsModal();
       roomId = msgData.content.roomId;
@@ -64,7 +64,7 @@ function removeGameScreen() {
   document.querySelector('main').removeChild(game);
 }
 
-function fetchGameScreen(side) {
+function fetchGameScreen(side, scoreboards) {
   fetch('../server/src/game-screen.php')
     .then((res) => res.text())
     .then((data) => {
@@ -79,6 +79,8 @@ function fetchGameScreen(side) {
       closeSettings();
       inGameSettingsModal();
       attachEventListeners();
+      updateScoreboard(scoreboards[0], true);
+      updateScoreboard(scoreboards[1], false);
       clearScoreboards();
       updateRoomId(roomId);
       toggleActiveScoreboard(side);
@@ -367,15 +369,16 @@ function updateScoreboard(newScoreboard, ownScoreboard) {
   const lastThrow = document.querySelector(`${player}.last-throw`);
   let lastThrowString = '';
 
-  newScoreboard.lastThrow.forEach((throwElement) => {
-    if (throwElement.multiplier == 2) {
-      lastThrowString += 'D';
-    } else if (throwElement.multiplier == 3) {
-      lastThrowString += 'T';
-    }
-    lastThrowString += `${throwElement.value} – `;
-  });
-
+  if (newScoreboard.lastThrow) {
+    newScoreboard.lastThrow.forEach((throwElement) => {
+      if (throwElement.multiplier == 2) {
+        lastThrowString += 'D';
+      } else if (throwElement.multiplier == 3) {
+        lastThrowString += 'T';
+      }
+      lastThrowString += `${throwElement.value} – `;
+    });
+  }
   // update points
   const points = document.querySelector(`${player}.points`);
 
