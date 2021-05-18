@@ -1,4 +1,4 @@
-const conn = new WebSocket('ws://192.168.178.21:9080');
+const conn = new WebSocket('ws://localhost:9080');
 let roomId;
 let settings = {};
 
@@ -79,8 +79,11 @@ function fetchGameScreen(side, scoreboards) {
       closeSettings();
       inGameSettingsModal();
       attachEventListeners();
-      updateScoreboard(scoreboards[0], true);
-      updateScoreboard(scoreboards[1], false);
+      if (scoreboards) {
+        updateScoreboard(scoreboards[0], true);
+        updateScoreboard(scoreboards[1], false);
+      }
+
       clearScoreboards();
       updateRoomId(roomId);
       toggleActiveScoreboard(side);
