@@ -1,3 +1,10 @@
+// (c) Martin Sonnberger 2021
+// Dieses Projekt ist im Rahmen des
+// MultiMediaTechnology Bachelorstudiums
+// an der FH Salzburg entstanden.
+// Kontakt: msonnberger.mmt-b2020@fh-salzburg.ac.at
+
+//'wss://users.multimediatechnology.at/~fhs45907/mmp1/ws/'
 const conn = new WebSocket('ws://localhost:9080');
 let roomId;
 let settings = {};
@@ -65,7 +72,7 @@ function removeGameScreen() {
 }
 
 function fetchGameScreen(side, scoreboards) {
-  fetch('../server/src/game-screen.php')
+  fetch('../src/game-screen.php')
     .then((res) => res.text())
     .then((data) => {
       const parser = new DOMParser();
@@ -79,12 +86,14 @@ function fetchGameScreen(side, scoreboards) {
       closeSettings();
       inGameSettingsModal();
       attachEventListeners();
+
       if (scoreboards) {
         updateScoreboard(scoreboards[0], true);
         updateScoreboard(scoreboards[1], false);
+      } else {
+        clearScoreboards();
       }
 
-      clearScoreboards();
       updateRoomId(roomId);
       toggleActiveScoreboard(side);
     })
@@ -364,9 +373,9 @@ function attachEventListeners() {
   });
 }
 
-function updateScoreboard(newScoreboard, ownScoreboard) {
+function updateScoreboard(newScoreboard, isOwnScoreboard) {
   toggleActiveScoreboard();
-  const player = ownScoreboard ? '.player1' : '.player2';
+  const player = isOwnScoreboard ? '.player1' : '.player2';
 
   // update last throw
   const lastThrow = document.querySelector(`${player}.last-throw`);
@@ -395,7 +404,7 @@ function updateScoreboard(newScoreboard, ownScoreboard) {
 
   if (points.textContent == 0) {
     // game ended
-    if (ownScoreboard) {
+    if (isOwnScoreboard) {
       createEndScreenModal(true);
     } else {
       createEndScreenModal(false);
@@ -439,9 +448,8 @@ function clearScoreboards() {
 
 function toggleActiveScoreboard(side = 'both') {
   if (side === 'both') {
-    document.querySelectorAll('.scoreboard').forEach((board) => {
-      board.classList.toggle('disabled');
-    });
+    toggleActiveScoreboard('left');
+    toggleActiveScoreboard('right');
   } else if (side === 'left') {
     document.querySelector('.scoreboard.player2').classList.toggle('disabled');
   } else if (side === 'right') {

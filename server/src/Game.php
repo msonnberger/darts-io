@@ -1,4 +1,10 @@
 <?php
+// IMPRESSUM:
+// (c) Martin Sonnberger 2021
+// Dieses Projekt ist im Rahmen des 
+// MultiMediaTechnology Bachelorstudiums
+// an der FH Salzburg entstanden.
+// Kontakt: msonnberger.mmt-b2020@fh-salzburg.ac.at
 
 namespace RemoteDarts;
 
