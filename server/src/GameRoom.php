@@ -85,6 +85,11 @@ class GameRoom {
 
     public function newGame() {
         $this->game = new Game($this->settings);
+
+        // swap players to change who goes first
+        $temp = $this->players[0];
+        $this->players[0] = $this->players[1];
+        $this->players[1] = $temp;
     }
 
     private function getRandomString($length) {

@@ -45,7 +45,8 @@ conn.onmessage = (msg) => {
       closeModals();
       settings = msgData.content.settings;
       clearScoreboards();
-      toggleActiveScoreboard();
+      const side = msgData.content.ownTurn ? 'left' : 'right';
+      toggleActiveScoreboard(side);
       updateSettingsModal();
       break;
     case 'error':
@@ -72,7 +73,7 @@ function removeGameScreen() {
 }
 
 function fetchGameScreen(side, scoreboards) {
-  fetch('../src/game-screen.php')
+  fetch('../server/src/game-screen.php')
     .then((res) => res.text())
     .then((data) => {
       const parser = new DOMParser();
@@ -446,14 +447,18 @@ function clearScoreboards() {
     .forEach((element) => (element.textContent = ''));
 }
 
-function toggleActiveScoreboard(side = 'both') {
-  if (side === 'both') {
-    toggleActiveScoreboard('left');
-    toggleActiveScoreboard('right');
+function toggleActiveScoreboard(side = 'toggle') {
+  const leftScoreboard = document.querySelector('.scoreboard.player1');
+  const rightScoreboard = document.querySelector('.scoreboard.player2');
+  if (side === 'toggle') {
+    leftScoreboard.classList.toggle('disabled');
+    rightScoreboard.classList.toggle('disabled');
   } else if (side === 'left') {
-    document.querySelector('.scoreboard.player2').classList.toggle('disabled');
+    leftScoreboard.classList.remove('disabled');
+    rightScoreboard.classList.add('disabled');
   } else if (side === 'right') {
-    document.querySelector('.scoreboard.player1').classList.toggle('disabled');
+    leftScoreboard.classList.add('disabled');
+    rightScoreboard.classList.remove('disabled');
   }
 }
 

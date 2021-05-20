@@ -166,8 +166,12 @@ class App implements MessageComponentInterface {
         $room = $this->getClientRoom($client);
         $room->newGame();
 
-        $msgContent = array('settings' => $room->getSettings());
-        $this->broadcastRoom($room->getId(), $this->createMessageString('newGame', $msgContent));
+        $msgContent = array('settings' => $room->getSettings(), 'ownTurn' => true);
+        $firstPlayer = $room->getPlayers()[0];
+        $firstPlayer->send($this->createMessageString('newGame', $msgContent));
+        $msgContent = array('settings' => $room->getSettings(), 'ownTurn' => false);
+        $secondPlayer = $room->getPlayers()[1];
+        $secondPlayer->send($this->createMessageString('newGame', $msgContent));
     }
 
     private function changeSettings(Conn $client, $settings) {
