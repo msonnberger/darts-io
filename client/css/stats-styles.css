@@ -1,0 +1,67 @@
+main {
+  margin-top: 5rem;
+  flex-grow: 1;
+}
+
+.stats-table {
+  border-spacing: 0;
+}
+
+.stats-table tr:first-child th:first-child {
+  border-top-left-radius: 1rem;
+  padding-left: 2rem;
+}
+
+.stats-table tr:first-child th:last-child {
+  border-top-right-radius: 1rem;
+}
+
+.stats-table tr:nth-child(2) td:first-child {
+  border-bottom-left-radius: 1rem;
+}
+
+.stats-table tr:nth-child(2) td:last-child {
+  border-bottom-right-radius: 1rem;
+}
+
+.table-header th,
+.table-header td {
+  background-color: #ebe7ff;
+}
+
+.stats-table tr:nth-child(3) td {
+  padding-top: 2rem;
+}
+
+.stats-table tr td:first-child {
+  padding-left: 2rem;
+}
+
+.stats-table tr td:last-child {
+  padding-right: 2rem;
+}
+
+th,
+td {
+  padding: 1rem;
+}
+
+th {
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.number-cell {
+  text-align: right;
+}
+
+.text-cell {
+  text-align: center;
+}
+
+.player-label {
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 1.6rem;
+  color: var(--gray);
+}
