@@ -34,8 +34,19 @@ class Game {
     }
 
     public function __destruct() {
-        // TODO: Save game to database
-        echo "called destructor\n";
+        include "functions.php";
+        $sth = $dbh->prepare("INSERT INTO game(point_mode, in_mode, out_mode, rounds_player1, rounds_player2, avg_player1, avg_player2) VALUES (?, ?, ?, ?, ?, ?, ?);");
+
+        $point_mode = intval($this->pointMode);
+        $in_mode = $this->inMode;
+        $out_mode = $this->outMode;
+        $rounds_player1 = $this->rounds[0];
+        $rounds_player2 = $this->rounds[1];
+        $avg_player1 = $this->scoreboards[0]['average'];
+        $avg_player2 = $this->scoreboards[1]['average'];
+        $values = array($point_mode, $in_mode, $out_mode, $rounds_player1, $rounds_player2, $avg_player1, $avg_player2);
+
+        $sth->execute($values);
     }
 
     public function getScoreboards() {
