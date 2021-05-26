@@ -1,6 +1,4 @@
 <?php
-    ini_set('display_errors', true);
-
     require "config.php";
 
     if ( ! $DB_NAME ) die ('please create config.php, define $DB_NAME, $DSN, $DB_USER, $DB_PASS there. See config_sample.php');

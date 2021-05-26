@@ -4,8 +4,9 @@
 // an der FH Salzburg entstanden.
 // Kontakt: msonnberger.mmt-b2020@fh-salzburg.ac.at
 
-//'wss://users.multimediatechnology.at/~fhs45907/mmp1/ws/'
-const conn = new WebSocket('ws://localhost:9080');
+//const URL = 'ws:localhost:9080';
+const URL = 'wss://users.multimediatechnology.at/~fhs45907/mmp1/ws/';
+const conn = new WebSocket(URL);
 let roomId;
 let settings = {};
 
