@@ -1,4 +1,3 @@
-/*
 CREATE DATABASE mmp1;
 
 CREATE TABLE game (
@@ -12,10 +11,9 @@ CREATE TABLE game (
     avg_player2 NUMERIC(4, 1)
 )
 
-
+/*
 INSERT INTO game(point_mode, in_mode, out_mode, rounds_player1, rounds_player2, avg_player1, avg_player2)
 VALUES
 (501, 'Single', 'Double', 5, 8, 83.5, 49.8);
 */
 
-SELECT * FROM game;

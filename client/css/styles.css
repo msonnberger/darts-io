@@ -48,7 +48,7 @@ body {
   align-items: center;
 }
 
-.game-header.active + main {
+main {
   flex-grow: 1;
 }
 
@@ -90,15 +90,25 @@ body {
 }
 
 .start-screen {
-  margin-top: -10rem;
   display: none;
 }
 
 .start-screen.active {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.intro {
+  line-height: 1.5;
+  text-align: center;
+  margin: 0 1rem;
+  margin-top: 5rem;
+  width: min(100vw - 2rem, 50rem);
 }
 
 .room-menu {
+  margin-top: 10rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -131,6 +141,11 @@ body {
   box-sizing: border-box;
   border-radius: 0.5em;
   text-transform: uppercase;
+}
+
+.stats-link {
+  margin: 5rem;
+  margin-top: 8rem;
 }
 
 button {

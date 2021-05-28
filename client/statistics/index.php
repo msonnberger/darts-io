@@ -24,41 +24,43 @@
         <a href="/MMP1/client/"><img src="../img/logo.svg" alt="darts.io Logo" class="logo" /></a>
     </header>
     <main>
-        <table class="stats-table">
-            <tr class="table-header">
-                <th class="text-cell">Punkte</th>
-                <th class="text-cell">In-Modus</th>
-                <th class="text-cell">Out-Modus</th>
-                <th colspan="2">Runden</th>
-                <th colspan="2">Average</th>
-            </tr>
-            <tr class="table-header">
-                <td></td>
-                <td></td>
-                <td></td>
-                <td class="number-cell player-label">Spieler 1</td>
-                <td class="number-cell player-label">Spieler 2</td>
-                <td class="number-cell player-label">Spieler 1</td>
-                <td class="number-cell player-label">Spieler 2</td>
-            </tr>
-            <?php
-            $sth = $dbh->query("SELECT * FROM game ORDER BY avg_player1 DESC LIMIT 100;");
-            $games = $sth->fetchAll();
-            foreach ($games as $game) {
-                ?>
-                <tr>
-                    <td class="text-cell">  <?= $game['point_mode']     ?></td>
-                    <td class="text-cell">  <?= $game['in_mode']        ?></td>
-                    <td class="text-cell">  <?= $game['out_mode']       ?></td>
-                    <td class="number-cell"><?= $game['rounds_player1'] ?></td>
-                    <td class="number-cell"><?= $game['rounds_player2'] ?></td>
-                    <td class="number-cell"><?= $game['avg_player1']    ?></td>
-                    <td class="number-cell"><?= $game['avg_player2']    ?></td>
+        <div class="table-scroll">
+            <table class="stats-table">
+                <tr class="table-header">
+                    <th class="text-cell">Punkte</th>
+                    <th class="text-cell">In-Modus</th>
+                    <th class="text-cell">Out-Modus</th>
+                    <th colspan="2">Runden</th>
+                    <th colspan="2">Average</th>
                 </tr>
-            <?php
-            }
-            ?>
-        </table>
+                <tr class="table-header">
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="number-cell player-label">Spieler 1</td>
+                    <td class="number-cell player-label">Spieler 2</td>
+                    <td class="number-cell player-label">Spieler 1</td>
+                    <td class="number-cell player-label">Spieler 2</td>
+                </tr>
+                <?php
+                $sth = $dbh->query("SELECT * FROM game ORDER BY avg_player1 DESC LIMIT 100;");
+                $games = $sth->fetchAll();
+                foreach ($games as $game) {
+                    ?>
+                    <tr>
+                        <td class="text-cell">  <?= $game['point_mode']     ?></td>
+                        <td class="text-cell">  <?= $game['in_mode']        ?></td>
+                        <td class="text-cell">  <?= $game['out_mode']       ?></td>
+                        <td class="number-cell"><?= $game['rounds_player1'] ?></td>
+                        <td class="number-cell"><?= $game['rounds_player2'] ?></td>
+                        <td class="number-cell"><?= $game['avg_player1']    ?></td>
+                        <td class="number-cell"><?= $game['avg_player2']    ?></td>
+                    </tr>
+                <?php
+                }
+                ?>
+            </table>
+        </div>
     </main>
 
     <footer>

@@ -34,10 +34,23 @@
     </header>
     <main>
       <div class="start-screen active">
+        <div class="intro">
+          <p class="intro-text">Herzlich willkommen!</p>
+          <p class="intro-text">
+            darts.io ist ein Punkteboard fürs gemeinsame Dartsspielen übers
+            Internet. Jeder wirft auf sein eigenes Board und trägt dann hier
+            seine Punkte ein, welche in Echtzeit zu deinem Gegner übertragen
+            werden.
+          </p>
+          <p class="intro-text">
+            Um loszulegen kannst du entweder einen neuen Raum eröffnen, oder
+            einem bereits bestehenden mit der Raum-ID beitreten.
+          </p>
+        </div>
         <div class="room-menu">
           <div class="join-menu">
             <div class="room-id-field">
-              <label class="room-id-label" for="room-id">Raum ID</label>
+              <label class="room-id-label" for="room-id">Raum-ID</label>
               <input
                 type="text"
                 id="room-id"
@@ -54,6 +67,8 @@
             Raum erstellen
           </button>
         </div>
+
+        <a class="btn-secondary stats-link" href="statistics/">Statistiken</a>
       </div>
       <div class="overlay"></div>
       <div class="settings-modal modal">
