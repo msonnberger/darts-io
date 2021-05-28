@@ -1,3 +1,5 @@
+![logo](https://users.multimediatechnology.at/~fhs45907/mmp1/client/img/logo.svg)
+
 # darts.io — Remote Darts Scoreboard
 
 _This project has been done as part of the MultiMediaTechnology bachelor's program at Salzburg University of Applied Sciences._
