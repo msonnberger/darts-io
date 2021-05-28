@@ -9,7 +9,9 @@ CREATE TABLE game (
     rounds_player2 INTEGER,
     avg_player1 NUMERIC(4, 1),
     avg_player2 NUMERIC(4, 1)
-)
+);
+
+CREATE INDEX avg_player1 ON game(avg_player1);
 
 /*
 INSERT INTO game(point_mode, in_mode, out_mode, rounds_player1, rounds_player2, avg_player1, avg_player2)
