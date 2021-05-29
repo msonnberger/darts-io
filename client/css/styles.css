@@ -364,10 +364,6 @@ button:disabled {
   height: clamp(62rem, 45vw, 80rem);
 }
 
-.black-ring {
-  filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.3));
-}
-
 .darts-field {
   cursor: pointer;
 }
