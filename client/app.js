@@ -35,6 +35,9 @@ conn.onmessage = (msg) => {
       updateSettingsModal();
       roomId = msgData.content.roomId;
       break;
+    case 'otherPlayerJoined':
+      removeSpinnerAndShowScoreboard();
+      break;
     case 'leftRoom':
       removeGameScreen();
       startScreenSettingsModal();
@@ -50,6 +53,8 @@ conn.onmessage = (msg) => {
       toggleActiveScoreboard(side);
       updateSettingsModal();
       break;
+    case 'endGame':
+      location.reload();
     case 'error':
       createErrorModal(msgData.errorMessage, msgData.isFatal);
       break;
@@ -96,6 +101,11 @@ function fetchGameScreen(side, scoreboards) {
         clearScoreboards();
       }
 
+      if (side === 'left') {
+        document.querySelector('.scoreboard.player2').classList.add('inactive');
+        document.querySelector('.spinner').classList.add('active');
+      }
+
       updateRoomId(roomId);
       toggleActiveScoreboard(side);
     })
@@ -121,6 +131,11 @@ settingsPrimaryBtn.addEventListener('click', () => {
   conn.send(JSON.stringify(msg));
   closeSettings();
 });
+
+function removeSpinnerAndShowScoreboard() {
+  document.querySelector('.spinner').classList.remove('active');
+  document.querySelector('.scoreboard.player2').classList.remove('inactive');
+}
 
 function setSettingsFromModal() {
   settings.pointMode = document.querySelector(
@@ -316,6 +331,10 @@ function attachEventListeners() {
     const multiplier = this.dataset.multiplier;
 
     const throwList = document.querySelector('.throw');
+    if (throwList.textContent == 'Du bist dran!') {
+      throwList.textContent = '';
+    }
+
     const currentThrowCount = throwList.childElementCount;
 
     if (currentThrowCount < 3) {
@@ -461,6 +480,13 @@ function toggleActiveScoreboard(side = 'toggle') {
     leftScoreboard.classList.add('disabled');
     rightScoreboard.classList.remove('disabled');
   }
+
+  const throwList = document.querySelector('.throw');
+  if (!leftScoreboard.classList.contains('disabled')) {
+    throwList.textContent = 'Du bist dran!';
+  } else {
+    throwList.textContent = '';
+  }
 }
 
 function updateRoomId(roomId) {
@@ -544,7 +570,7 @@ function createEndScreenModal(winner) {
   const closeButton = document.createElement('button');
   closeButton.classList.add('btn-secondary');
   closeButton.textContent = 'Beenden';
-  closeButton.addEventListener('click', reloadPage);
+  closeButton.addEventListener('click', endGame);
 
   const modal = document.createElement('div');
   modal.classList.add('modal', 'open');
@@ -557,6 +583,8 @@ function createEndScreenModal(winner) {
   document.querySelector('.overlay').classList.add('open');
 }
 
-function reloadPage() {
+function endGame() {
+  const msg = { cmd: 'endGame' };
+  conn.send(JSON.stringify(msg));
   location.reload();
 }

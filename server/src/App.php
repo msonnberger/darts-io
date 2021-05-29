@@ -52,8 +52,11 @@ class App implements MessageComponentInterface {
             case 'changeSettings':
                 $this->changeSettings($from, $msgObj->settings);
                 break;
+            case 'endGame':
+                $this->endGameForAll($from);
+                break;
             default:
-                $this->sendError($from, 'This command does not exist.');
+                $this->sendError($from, "[$cmd] command does not exist.");
                 break;
         }
     }
@@ -118,6 +121,9 @@ class App implements MessageComponentInterface {
 
                     $msgContent = array('roomId' => $roomId, 'settings' => $settings, 'scoreboards' => $scoreboards);
                     $client->send($this->createMessageString('joinedRoom', $msgContent));
+
+                    $msg = $this->createMessageString('otherPlayerJoined', null);
+                    $this->broadcastRoomExceptFrom($client, $msg);
                 } catch (\Exception $e) {
                     $this->sendError($client, $e->getMessage());
                 }
@@ -177,6 +183,11 @@ class App implements MessageComponentInterface {
     private function changeSettings(Conn $client, $settings) {
         $room = $this->getClientRoom($client);
         $room->changeSettings($settings);
+    }
+
+    private function endGameForAll(Conn $from) {
+        $msg = $this->createMessageString('endGame', null);
+        $this->broadcastRoomExceptFrom($from, $msg);
     }
 
     private function getClientRoom(Conn $client) {
