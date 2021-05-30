@@ -470,6 +470,7 @@ function clearScoreboards() {
 function toggleActiveScoreboard(side = 'toggle') {
   const leftScoreboard = document.querySelector('.scoreboard.player1');
   const rightScoreboard = document.querySelector('.scoreboard.player2');
+
   if (side === 'toggle') {
     leftScoreboard.classList.toggle('disabled');
     rightScoreboard.classList.toggle('disabled');
