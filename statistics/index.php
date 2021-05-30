@@ -28,8 +28,8 @@
             <table class="stats-table">
                 <tr class="table-header">
                     <th class="text-cell">Punkte</th>
-                    <th class="text-cell">In-Modus</th>
-                    <th class="text-cell">Out-Modus</th>
+                    <th class="text-cell">In</th>
+                    <th class="text-cell">Out</th>
                     <th colspan="2">Runden</th>
                     <th colspan="2">Average</th>
                 </tr>
@@ -37,10 +37,10 @@
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td class="number-cell player-label">Spieler 1</td>
-                    <td class="number-cell player-label">Spieler 2</td>
-                    <td class="number-cell player-label">Spieler 1</td>
-                    <td class="number-cell player-label">Spieler 2</td>
+                    <td class="number-cell player-label">Sp. 1</td>
+                    <td class="number-cell player-label">Sp. 2</td>
+                    <td class="number-cell player-label">Sp. 1</td>
+                    <td class="number-cell player-label">Sp. 2</td>
                 </tr>
                 <?php
                 $sth = $dbh->query("SELECT * FROM game ORDER BY avg_player1 DESC LIMIT 100;");
