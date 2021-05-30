@@ -1,4 +1,4 @@
-![logo](https://users.multimediatechnology.at/~fhs45907/mmp1/client/img/logo.svg)
+![logo](https://users.multimediatechnology.at/~fhs45907/mmp1/img/logo.svg)
 
 # Technische Beschreibung
 

@@ -1,4 +1,4 @@
-![logo](https://users.multimediatechnology.at/~fhs45907/mmp1/client/img/logo.svg)
+![logo](https://users.multimediatechnology.at/~fhs45907/mmp1/img/logo.svg)
 
 # darts.io — Remote Darts Scoreboard
 
@@ -16,8 +16,8 @@ Here is a working live demo: https://users.multimediatechnology.at/~fhs45907/mmp
 - Run `php server/bin/composer install` to install dependencies.
 - In your web server config, create a reverse proxy to the **WebSocket** server. See [documentation](https://httpd.apache.org/docs/2.4/mod/mod_proxy_wstunnel.html) for Apache 2.4
 - Run `php server/bin/start-server.php` to get the WebSocket server running. Default port is 9000.
-- In `/client/app.js` on line 7, set URL for WebSocket server or leave it on default for localhost
-- Ready! Test connection by opening up `/client/index.html`. In your terminal where the PHP script is running, it should say "New Connection! (_ID_)"
+- In `app.js` on line 7, set URL for WebSocket server or leave it on default for localhost
+- Ready! Test connection by opening up `index.html`. In your terminal where the PHP script is running, it should say "New Connection! (_ID_)"
 
 ## Usage
 

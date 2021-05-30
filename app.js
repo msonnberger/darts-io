@@ -10,14 +10,8 @@ const conn = new WebSocket(URL);
 let roomId;
 let settings = {};
 
-/* setTimeout(() => {
-  if (conn.readyState === 3) {
-    createErrorModal('Verbindung konnte nicht hergestellt werden', true);
-  }
-}, 5000); */
-
 conn.onopen = (event) => {
-  console.log('Connection established!');
+  console.log('WebSocket connection established!');
 };
 
 conn.onmessage = (msg) => {
@@ -79,7 +73,7 @@ function removeGameScreen() {
 }
 
 function fetchGameScreen(side, scoreboards) {
-  fetch('../server/src/game-screen.php')
+  fetch('./game-screen.html')
     .then((res) => res.text())
     .then((data) => {
       const parser = new DOMParser();
