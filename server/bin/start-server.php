@@ -13,7 +13,7 @@ use RemoteDarts\App;
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 
-$PORT = 9080;
+$PORT = 9000;
 
 $server = IoServer::factory(
     new HttpServer(
