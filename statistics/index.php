@@ -28,7 +28,7 @@ include "functions.php";
 </head>
 <body>
     <header class="game-header">
-        <a href="/MMP1/client/"><img src="../img/logo.svg" alt="darts.io Logo" class="logo" /></a>
+        <a href="../index.html"><img src="../img/logo.svg" alt="darts.io Logo" class="logo" /></a>
     </header>
     <main>
         <div class="table-scroll">
@@ -72,7 +72,7 @@ include "functions.php";
 
     <footer>
         <p class="footer-text">© Martin Sonnberger 2021</p>
-        <a href="imprint" class="footer-link">Impressum</a>
+        <a href="../imprint/" class="footer-link">Impressum</a>
     </footer>
 </body>
 </html>
