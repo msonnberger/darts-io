@@ -118,12 +118,13 @@ main {
   display: flex;
   flex-wrap: wrap;
   align-items: flex-end;
+  justify-content: center;
+  gap: 1rem;
 }
 
 .room-id-field {
   display: flex;
   flex-direction: column;
-  margin-right: 1rem;
 }
 
 .room-id-label {
@@ -409,7 +410,7 @@ button:disabled {
   font-weight: 300;
   font-size: 3rem;
   height: 3.2rem;
-  width: 20rem;
+  width: max-content;
   text-align: center;
 }
 
@@ -544,10 +545,6 @@ footer {
     flex-direction: column-reverse;
   }
 
-  .scoreboard {
-    margin: 0;
-  }
-
   .throw-container {
     flex-direction: column;
   }
@@ -555,6 +552,30 @@ footer {
   .avg-label {
     margin-top: 1rem;
     margin-bottom: 1rem;
+  }
+}
+
+@media screen and (max-width: 360px) {
+  .room-buttons,
+  footer {
+    font-size: 1.8rem;
+  }
+
+  .score-btn {
+    width: 5rem;
+    height: 5rem;
+  }
+
+  .button-grid {
+    gap: 0.3rem;
+  }
+
+  .last-throw {
+    font-size: 2.4rem;
+  }
+
+  .points {
+    font-size: 7rem;
   }
 }
 
