@@ -22,6 +22,10 @@ conn.onmessage = (msg) => {
     case 'createdRoom':
       fetchGameScreen('left');
       roomId = msgData.content.id;
+      createModal(
+        'Raum wurde erstellt',
+        `Teile diese Raum-ID mit deinem Gegner: ${roomId}`
+      );
       break;
     case 'joinedRoom':
       fetchGameScreen('right', msgData.content.scoreboards);
@@ -50,7 +54,11 @@ conn.onmessage = (msg) => {
     case 'endGame':
       location.reload();
     case 'error':
-      createErrorModal(msgData.errorMessage, msgData.isFatal);
+      createModal(
+        'Es ist etwas schiefgelaufen',
+        msgData.errorMessage,
+        msgData.isFatal
+      );
       break;
     default:
       break;
@@ -507,14 +515,14 @@ function getAllSiblings(element) {
   return siblings;
 }
 
-function createErrorModal(errorMessage, isFatal) {
+function createModal(headingText, messageText, isFatal) {
   const heading = document.createElement('h2');
   heading.classList.add('modal-heading', 'error-heading');
-  heading.textContent = 'Es ist etwas schiefgelaufen';
+  heading.textContent = headingText;
 
   const errorText = document.createElement('p');
   errorText.classList.add('modal-text', 'error-text');
-  errorText.textContent = errorMessage;
+  errorText.textContent = messageText;
 
   const button = document.createElement('button');
   button.classList.add('btn-primary');
