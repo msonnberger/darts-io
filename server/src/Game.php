@@ -92,7 +92,7 @@ class Game {
                 $realScore = 0; // No score because of double-in rule
             } else if ($this->inMode === 'Triple' and $firstMulti !== 3) {
                 $realScore = 0; // No score because of triple-in rule
-            } else if ($this->inMode === 'Master' and ($firstMulti !== 2 or $firstMulti !== 3)) {
+            } else if ($this->inMode === 'Master' and !($firstMulti === 2 or $firstMulti === 3)) {
                 $realScore = 0; // No score because of master-in rule
             }
         }
@@ -117,7 +117,7 @@ class Game {
                 $realScore = 0; // No score because of double-out rule;
             } else if ($this->outMode === 'Triple' and $lastMulti !== 3) {
                 $realScore = 0; // No score because of triple-out rule;
-            } else if ($this->outMode === 'Master' and ($lastMulti !== 2 or $lastMulti !== 3)) {
+            } else if ($this->outMode === 'Master' and !($lastMulti === 2 or $lastMulti === 3)) {
                 $realScore = 0; // No score becasue of master-out rule;
             }
         }
