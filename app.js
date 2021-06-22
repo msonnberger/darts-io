@@ -105,7 +105,7 @@ function fetchGameScreen(side, scoreboards) {
 
       if (side === 'left') {
         document.querySelector('.scoreboard.player2').classList.add('inactive');
-        document.querySelector('.spinner').classList.add('active');
+        document.querySelector('.scoreboards .spinner').classList.add('active');
       }
 
       updateRoomId(roomId);
@@ -135,7 +135,7 @@ settingsPrimaryBtn.addEventListener('click', () => {
 });
 
 function removeSpinnerAndShowScoreboard() {
-  document.querySelector('.spinner').classList.remove('active');
+  document.querySelector('.scoreboards .spinner').classList.remove('active');
   document.querySelector('.scoreboard.player2').classList.remove('inactive');
 }
 
@@ -485,10 +485,14 @@ function toggleActiveScoreboard(side = 'toggle') {
   }
 
   const throwList = document.querySelector('.throw');
+  const throwSpinner = document.querySelector('.throw-container .spinner');
+
   if (!leftScoreboard.classList.contains('disabled')) {
     throwList.textContent = 'Du bist dran!';
+    throwSpinner.classList.remove('active');
   } else {
     throwList.textContent = '';
+    throwSpinner.classList.add('active');
   }
 }
 

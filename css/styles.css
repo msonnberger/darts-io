@@ -589,6 +589,10 @@ footer {
   display: none;
 }
 
+.throw-container .spinner {
+  margin: 3rem 5rem 0 0;
+}
+
 .spinner.active {
   display: block;
 }
