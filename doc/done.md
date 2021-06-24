@@ -10,4 +10,5 @@
 ## Usability Improvements
 
 - Nach dem Erstellen eines neuen Raums wird jetzt ein Modal angezeigt, welches auf die Raum-ID hinweist und dazu auffordert, diese mit dem Gegner zu teilen. Da ich schon an anderen Stellen Modals benutze (zum Beispiel bei Fehlern), musste ich die bereits bestehende Funktion nur leicht verändern.
-- Während man auf den Wurf des Gegners wartet, wird nun ein Spinner angzeigt, der dies verdeutlicht. Denselben Spinner verwende ich auch nach dem Erstellen eines Raumes, nämlich bis der Gegner den Raum betreten hat.
+- Während man auf den Wurf des Gegners wartet, wird nun ein Spinner angzeigt, der verdeutlichen soll, dass man gerade nicht dran ist und auf den Gegenspieler warten muss. Analog dazu wird 'Du bist dran!' angezeigt, wenn man schließlich an der Reihe ist.
+- Verbesserte Responsiveness auf sehr kleinen Geräten wie zum Beispiel dem iPhone 5. Hierzu habe ich mit einer media-query die Schriftgröße etwas verkleinert. Da ich sonst mit den Schriften zufrieden war, hab ich einen "harten" Breakpoint gesetzt, anstatt skalierende Größen mit der `clamp()` Funktion zu setzen.
