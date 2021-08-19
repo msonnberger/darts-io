@@ -8,7 +8,7 @@ _Contact: [msonnberger.mmt-b2020@fh-salzburg.ac.at](mailto:msonnberger.mmt-b2020
 
 ## Demo
 
-Here is a working live demo: https://www.msonnberger.com/darts-io/
+Here is a working live demo: https://projects.msonnberger.com/darts-io/
 
 ## Installation
 
