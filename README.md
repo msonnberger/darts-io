@@ -1,4 +1,4 @@
-![logo](https://users.multimediatechnology.at/~fhs45907/mmp1/img/logo.svg)
+![logo](https://projects.msonnberger.com/darts-io/img/logo.svg)
 
 # darts.io — Remote Darts Scoreboard
 
