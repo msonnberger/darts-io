@@ -1,14 +1,8 @@
-![logo](https://projects.msonnberger.com/darts-io/img/logo.svg)
-
 # darts.io — Remote Darts Scoreboard
 
 _This project has been done as part of the MultiMediaTechnology bachelor's program at Salzburg University of Applied Sciences._
 
 _Contact: [msonnberger.mmt-b2020@fh-salzburg.ac.at](mailto:msonnberger.mmt-b2020@fh-salzburg.ac.at)_
-
-## Demo
-
-Here is a working live demo: https://projects.msonnberger.com/darts-io/
 
 ## Installation
 
